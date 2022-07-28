@@ -1,4 +1,4 @@
-let myLibrary = [];
+const myLibrary = [];
 
 function Book(title, author, year, description, imageURL) {
     this.title = title,
@@ -9,25 +9,11 @@ function Book(title, author, year, description, imageURL) {
 }
 
 function addBookToLibrary(bookObject) {
-    myLibrary += bookObject;
+    myLibrary.push(bookObject);
     return myLibrary;
 }
 
-function showBookForm() {
-    // Change css visibility attribute to visible on click
-}
-
-function parseFormData() {
-    // Retrieve form data
-}
-
-function createNewBook() {
-    // Use book constructor to take data from parseDormData
-    // and return a new book object
-}
-
-
-// Creating initial example book objects //
+// ---------- Creating initial example book objects ---------- //
 
 const daVinci = new Book('The Da Vinci Code',
                          'Dan Brown',
@@ -46,4 +32,78 @@ const greatGatsby = new Book('The Great gatsby',
 addBookToLibrary(daVinci);
 addBookToLibrary(greatGatsby);
 
-console.log(myLibrary)
+// ---------- Creating initial example book objects ---------- //
+
+function parseFormData() {
+    // Retrieve form data
+}
+
+function createNewBook() {
+    // Use book constructor to take data from parseDormData
+    // and return a new book object
+}
+
+function createNewCard(newBook) {
+    const cardDeck = document.querySelector('.card-deck')
+
+    const cardTemplate =  document.createElement('div');
+    cardTemplate.classList.add('card');
+
+    const cardImage = document.createElement('div');
+    cardImage.classList.add('image');
+    cardImage.style.backgroundImage = `url('${newBook.imageURL}')`;
+
+    const bookInfo = document.createElement('div');
+    bookInfo.classList.add('book-info');
+
+    const bookTitle = document.createElement('h3');
+    const titleText = document.createTextNode(newBook.title);
+    bookTitle.appendChild(titleText);
+    
+    const bookAuthor = document.createElement('h3');
+    const authorText = document.createTextNode(newBook.author);
+    bookAuthor.appendChild(authorText);
+    
+    const bookDescription = document.createElement('p');
+    const descriptionText = document.createTextNode(newBook.description);
+    bookDescription.appendChild(descriptionText);
+
+    const deleteButton = document.createElement('a');
+    deleteButton.innerHTML = '<i class="fa-solid fa-trash-can"></i>';
+
+    bookInfo.appendChild(bookTitle);
+    bookInfo.appendChild(bookAuthor);
+    bookInfo.appendChild(bookDescription);
+    bookInfo.appendChild(deleteButton);
+
+    cardTemplate.appendChild(cardImage);
+    cardTemplate.appendChild(bookInfo)
+
+    cardDeck.appendChild(cardTemplate);
+}
+
+myLibrary.forEach(book => {
+    createNewCard(book);
+});
+
+// ---------- Form visibility functions ---------- //
+
+function showBookForm() {
+    let bookForm = document.querySelector('.book-form-background');
+    if (bookForm.style.visibility != 'visible') {
+        bookForm.style.visibility = 'visible';
+    };
+};
+
+function cancelBookForm() {
+    let bookForm = document.querySelector('.book-form-background');
+    if (bookForm.style.visibility === 'visible') {
+        bookForm.style.visibility = 'hidden';
+    };
+};
+
+let newFormButton = document.querySelector('.add-book-button');
+newFormButton.addEventListener('click', showBookForm);
+
+let cancelFormButton = document.querySelector('button[type=reset]')
+cancelFormButton.addEventListener('click', cancelBookForm)
