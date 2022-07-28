@@ -96,6 +96,7 @@ main .sidebar a {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
     grid-auto-rows: 250px;
+    height: calc(100vh - 80px);
     gap: 20px;
     padding: 20px;
     overflow-y: auto;
