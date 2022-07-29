@@ -200,10 +200,19 @@ main .sidebar a {
 }
 
 .book-form-container form input[type=text],
+.book-form-container form input[type=number],
 .book-form-container form textarea {
     font-size: 16px;
     padding: 3px;
 }
+
+.book-form-container form input[type=text]:focus,
+.book-form-container form input[type=number]:focus,
+.book-form-container form textarea:focus {
+    border-radius: 5px;
+    outline:2px solid #003865;
+    outline-offset: 3px;
+} 
 
 .book-form-container form textarea {
     height: 70px;
