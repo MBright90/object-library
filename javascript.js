@@ -17,7 +17,7 @@ function addBookToLibrary(bookObject) {
 
 const daVinci = new Book(title = 'The Da Vinci Code',
                          author = 'Dan Brown',
-                         year = 2006,
+                         year = 2003,
                          description = 'Robert Langdon, a professor who studies symbols and artifacts, chases down an age old scavenger hunt to find a secret that threatens to smash christianity wide open',
                          imageURL = 'https://images-na.ssl-images-amazon.com/images/I/A15FFg6aNLL.jpg'
 );
@@ -56,16 +56,40 @@ addBookToLibrary(robinsonCrusoe);
 addBookToLibrary(gobletOfFire);
 addBookToLibrary(bridgetJones);
 
-// ---------- Creating initial example book objects ---------- //
+// ---------- Form completion and data retrieval ---------- //
 
 function parseFormData() {
-    // Retrieve form data
-}
+    let titleInput = document.querySelector('#book-title');
+    let authorInput = document.querySelector('#book-author');
+    let yearInput = document.querySelector('#book-year');
+    let descriptionInput = document.querySelector('#book-description');
+    let imageInput = document.querySelector('#book-cover-url');
 
-function createNewBook() {
-    // Use book constructor to take data from parseDormData
-    // and return a new book object
-}
+    let bookObject = createNewBook(titleInput.value,
+                                   authorInput.value,
+                                   yearInput.value,
+                                   descriptionInput.value,
+                                   imageInput.value
+    );
+
+    if (bookObject) {
+        createNewCard(bookObject);
+        cancelBookForm();
+    } else {
+        alert('Please complete all form fields')
+    };
+
+    initializeDelete();
+};
+
+function createNewBook(title, author, year, description, imageURL) {
+    if (!title || !author || !year || !imageURL) return null;
+    const bookObject = new Book(title, author, year, description, imageURL);
+    return bookObject;
+};
+
+let submitFormButton = document.querySelector('.form-buttons-container>button[type=button]')
+submitFormButton.addEventListener('click', parseFormData)
 
 function createNewCard(newBook) {
     const cardDeck = document.querySelector('.card-deck')
@@ -106,13 +130,16 @@ function createNewCard(newBook) {
     cardDeck.appendChild(cardTemplate);
 }
 
-myLibrary.forEach(book => {
-    createNewCard(book);
-});
-
-myLibrary.forEach(book => {
-    createNewCard(book);
-});
+function initializeDelete() {
+    let deleteButtons = document.querySelectorAll('.book-info>a');
+    deleteButtons.forEach(button => {
+        button.addEventListener('click', (e) => {
+            if (window.confirm('Delete card?')) {
+                e.path[3].remove();
+            };
+        });
+    });
+}
 
 // ---------- Form visibility functions ---------- //
 
@@ -135,3 +162,21 @@ newFormButton.addEventListener('click', showBookForm);
 
 let cancelFormButton = document.querySelector('button[type=reset]')
 cancelFormButton.addEventListener('click', cancelBookForm)
+
+
+// -------------- Example invocation ------------ //
+myLibrary.forEach(book => {
+    createNewCard(book);
+});
+myLibrary.forEach(book => {
+    createNewCard(book);
+});
+
+let deleteButtons = document.querySelectorAll('.book-info>a');
+deleteButtons.forEach(button => {
+    button.addEventListener('click', (e) => {
+        if (window.confirm('Delete card?')) {
+        e.path[3].remove();
+        };
+    });
+});
