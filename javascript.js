@@ -76,7 +76,7 @@ function parseFormData() {
         createNewCard(bookObject);
         cancelBookForm();
     } else {
-        alert('Please complete all form fields')
+        alert('Please complete all required form fields')
     };
 
     initializeDelete();
@@ -128,7 +128,13 @@ function createNewCard(newBook) {
     cardTemplate.appendChild(bookInfo)
 
     cardDeck.appendChild(cardTemplate);
-}
+
+    deleteButton.addEventListener('click', (e) => {
+        if (window.confirm('Delete card?')) {
+            e.path[3].remove();
+        };
+    });
+};
 
 function initializeDelete() {
     let deleteButtons = document.querySelectorAll('.book-info>a');
@@ -140,6 +146,8 @@ function initializeDelete() {
         });
     });
 }
+
+initializeDelete();
 
 // ---------- Form visibility functions ---------- //
 
@@ -170,13 +178,4 @@ myLibrary.forEach(book => {
 });
 myLibrary.forEach(book => {
     createNewCard(book);
-});
-
-let deleteButtons = document.querySelectorAll('.book-info>a');
-deleteButtons.forEach(button => {
-    button.addEventListener('click', (e) => {
-        if (window.confirm('Delete card?')) {
-        e.path[3].remove();
-        };
-    });
 });
