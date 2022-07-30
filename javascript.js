@@ -1,7 +1,7 @@
 const myLibrary = [];
 
 function Book(title, author, year, description, imageURL) {
-    this.title = title,
+    this.title = title.trim(),
     this.author = author,
     this.year = year,
     this.description = description,
@@ -15,46 +15,35 @@ function addBookToLibrary(bookObject) {
 
 // ---------- Creating initial example book objects ---------- //
 
-const daVinci = new Book(title = 'The Da Vinci Code',
-                         author = 'Dan Brown',
-                         year = 2003,
-                         description = 'Robert Langdon, a professor who studies symbols and artifacts, chases down an age old scavenger hunt to find a secret that threatens to smash christianity wide open',
-                         imageURL = 'https://images-na.ssl-images-amazon.com/images/I/A15FFg6aNLL.jpg'
-);
+addBookToLibrary(new Book(title = 'The Da Vinci Code',
+                          author = 'Dan Brown',
+                          year = 2003,
+                          description = 'Robert Langdon, a professor who studies symbols and artifacts, chases down an age old scavenger hunt to find a secret that threatens to smash christianity wide open',
+                          imageURL = 'https://images-na.ssl-images-amazon.com/images/I/A15FFg6aNLL.jpg'));
 
-const greatGatsby = new Book(title = 'The Great gatsby',
-                             author = 'F. Scott Fitzgerald',
-                             year = 1925,
-                             description = 'Nick Carroway tells of his neighbour, the mysterious millionaire Jay Gatsby, and his obsession to reunite with his former lover, Nick\'s cousin',
-                             imageURL = 'https://kbimages1-a.akamaihd.net/2411acbb-9daa-43fb-a5a2-a9aec064e17e/1200/1200/False/the-great-gatsby-238.jpg'
-);
+addBookToLibrary(new Book(title = 'The Great gatsby',
+                          author = 'F. Scott Fitzgerald',
+                          year = 1925,
+                          description = 'Nick Carroway tells of his neighbour, the mysterious millionaire Jay Gatsby, and his obsession to reunite with his former lover, Nick\'s cousin',
+                          imageURL = 'https://kbimages1-a.akamaihd.net/2411acbb-9daa-43fb-a5a2-a9aec064e17e/1200/1200/False/the-great-gatsby-238.jpg'));
 
-const robinsonCrusoe = new Book(title = 'Robinson Crusoe',
-                                author = 'Daniel Defoe',
-                                year = 1719,
-                                description = 'Driven from a loving family and a comfortable, secure life by an unswerving compulsion for the high seas, Crusoe finds successive misfortunes and escapes culminating in near-death disaster and emerging as lone survivor.',
-                                imageURL = 'https://www.booksoftitans.com/wp-content/uploads/2019/02/robinson-crusoe.jpg'
-);
+addBookToLibrary(new Book(title = 'Robinson Crusoe',
+                          author = 'Daniel Defoe',
+                          year = 1719,
+                          description = 'Driven from a loving family and a comfortable, secure life by an unswerving compulsion for the high seas, Crusoe finds successive misfortunes and escapes culminating in near-death disaster and emerging as lone survivor.',
+                          imageURL = 'https://www.booksoftitans.com/wp-content/uploads/2019/02/robinson-crusoe.jpg'));
 
-const gobletOfFire = new Book(title = 'Harry Potter and the Goblet of Fire',
-                              author = 'J.K. Rowling',
-                              year = 2000,
-                              description = 'When Harry gets chosen as the fourth participant in the inter-school Triwizard Tournament, he is unwittingly pulled into a dark conspiracy that slowly unveils its dangerous agenda.',
-                              imageURL = 'https://images-na.ssl-images-amazon.com/images/I/91ZXAG2umhL.jpg'
-);
+addBookToLibrary(new Book(title = 'Harry Potter and the Goblet of Fire',
+                          author = 'J.K. Rowling',
+                          year = 2000,
+                          description = 'When Harry gets chosen as the fourth participant in the inter-school Triwizard Tournament, he is unwittingly pulled into a dark conspiracy that slowly unveils its dangerous agenda.',
+                          imageURL = 'https://images-na.ssl-images-amazon.com/images/I/91ZXAG2umhL.jpg'));
 
-const bridgetJones = new Book(title = 'Bridget Jones\' Diary',
-                              author = 'Helen Fielding',
-                              year = 1996,
-                              description = 'Written in the form of a personal diary, the novel chronicles a year in the life of Bridget Jones, a thirty-something single working woman living in London.',
-                              imageURL = 'https://images.penguinrandomhouse.com/cover/9780140280098'
-);
-
-addBookToLibrary(daVinci);
-addBookToLibrary(greatGatsby);
-addBookToLibrary(robinsonCrusoe);
-addBookToLibrary(gobletOfFire);
-addBookToLibrary(bridgetJones);
+addBookToLibrary(new Book(title = 'Bridget Jones\' Diary',
+                          author = 'Helen Fielding',
+                          year = 1996,
+                          description = 'Written in the form of a personal diary, the novel chronicles a year in the life of Bridget Jones, a thirty-something single working woman living in London.',
+                          imageURL = 'https://images.penguinrandomhouse.com/cover/9780140280098'));
 
 // ---------- Form completion and data retrieval ---------- //
 
@@ -171,6 +160,32 @@ newFormButton.addEventListener('click', showBookForm);
 let cancelFormButton = document.querySelector('button[type=reset]')
 cancelFormButton.addEventListener('click', cancelBookForm)
 
+// -------------- Book sorting functions ------------- //
+
+function compareBooksAZ(a, b) {
+
+    let titleA = checkTitle(a.title.toLowerCase());
+    let titleB = checkTitle(b.title.toLowerCase());
+
+    if (titleA < titleB) {
+        return -1;
+    } else if (titleA > titleB) {
+        return 1;
+    } else {
+        return 0;
+    };
+
+};
+
+function checkTitle(title) {
+    let thePattern = new RegExp(/^(\bthe\b)/i);
+
+    if (title.match(thePattern)) {
+        title = title.substring(title.indexOf(' ') + 1);
+    };
+
+    return title;
+}
 
 // -------------- Example invocation ------------ //
 myLibrary.forEach(book => {
