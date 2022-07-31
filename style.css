@@ -69,12 +69,12 @@ main .sidebar button {
     width: 100%;
 }
 
-main .sidebar button:disabled {
+button:disabled {
     opacity: 0.5;
 }
 
 main .sidebar button:hover,
-.form-buttons-container button:hover {
+.book-form-background .book-form-container button:hover {
     top: -2px;
     box-shadow: 0 3px 3px rgba(0, 0, 0, 0.8);
 }
@@ -144,18 +144,32 @@ main .sidebar a {
 
 .card-deck .card .book-info h3:nth-child(1) {
     margin-top: 10px;
+    width: 70%;
 }
 
 .card-deck .card .book-info p {
+    height: auto;
+    overflow-y: auto;
     font-size: 18px;
 }
 
-.card-deck .card .book-info a {
+.card-deck .card .book-info a{
     position: absolute;
-    bottom: 10px;
-    right: 10px;
     font-size: 24px;
     opacity: 0.5;
+}
+
+.card-deck .card .book-info a:first-of-type {
+    border-radius: 50%;
+    top: 10px;
+    right: 50px;
+    text-align: center;
+    width: 30px;
+}
+
+.card-deck .card .book-info a:last-of-type {
+    top: 10px;
+    right: 10px;
 }
 
 /* -------------------- new Book Form -------------------- */
