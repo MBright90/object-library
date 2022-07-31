@@ -125,19 +125,6 @@ function createNewCard(newBook) {
     });
 };
 
-function initializeDelete() {
-    let deleteButtons = document.querySelectorAll('.book-info>a');
-    deleteButtons.forEach(button => {
-        button.addEventListener('click', (e) => {
-            if (window.confirm('Delete card?')) {
-                e.path[3].remove();
-            };
-        });
-    });
-}
-
-initializeDelete();
-
 // ---------- Form visibility functions ---------- //
 
 function showBookForm() {
@@ -157,10 +144,21 @@ function cancelBookForm() {
 let newFormButton = document.querySelector('.add-book-button');
 newFormButton.addEventListener('click', showBookForm);
 
-let cancelFormButton = document.querySelector('button[type=reset]')
-cancelFormButton.addEventListener('click', cancelBookForm)
+let cancelFormButton = document.querySelector('button[type=reset]');
+cancelFormButton.addEventListener('click', cancelBookForm);
 
 // -------------- Book sorting functions ------------- //
+
+function compareBooksYear(a, b) {
+
+    if (a.year < b.year) {
+        return -1;
+    } else if (a.year > b.year) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
 
 function compareBooksAZ(a, b) {
 
@@ -178,16 +176,56 @@ function compareBooksAZ(a, b) {
 };
 
 function checkTitle(title) {
-    let thePattern = new RegExp(/^(\bthe\b)/i);
+    let thePattern = new RegExp(/^(\bthe\b)/i);  // Removes 'the' from beginning of book titles, case insensitive
 
     if (title.match(thePattern)) {
         title = title.substring(title.indexOf(' ') + 1);
     };
 
     return title;
-}
+};
+
+let sortYear = document.querySelector('.sort-year-button');
+sortYear.addEventListener('click', () => {
+    removeAllCards();
+    myLibrary.sort(compareBooksYear).forEach(book => {
+        createNewCard(book);
+    })
+})
+
+let sortAZ = document.querySelector('.sort-az-button');
+sortAZ.addEventListener('click', () => {
+    removeAllCards();
+    myLibrary.sort(compareBooksAZ).forEach(book => {
+        createNewCard(book);
+    });
+}) ;
+
+// ---------------- Card removal functions -------------- //
+
+
+function initializeDelete() {
+    let deleteButtons = document.querySelectorAll('.book-info>a');
+    deleteButtons.forEach(button => {
+        button.addEventListener('click', (e) => {
+            if (window.confirm('Delete card?')) {
+                e.path[3].remove();
+            };
+        });
+    });
+};
+
+initializeDelete();
+
+function removeAllCards() {
+    let cardDeck = document.querySelectorAll('.card');
+    cardDeck.forEach(card => {
+        card.remove()
+    });
+};
 
 // -------------- Example invocation ------------ //
+
 myLibrary.forEach(book => {
     createNewCard(book);
 });
