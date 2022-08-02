@@ -78,11 +78,12 @@ export default class APIManager {
     
         deleteButton.addEventListener('click', (e) => {
             if (window.confirm('Delete card?')) {
+                console.log(this.bookShelf);
                 this.bookShelf.forEach(book => {
-                    if (book.bookID === e.composedPath()[3].dataset.bookId) {
-                        console.log(book)
-                        let bookIndex = this.bookShelf.indexOf(book); 
-                        this.bookShelf.splice(bookIndex, 1)
+                    if (book.bookID == e.composedPath()[3].dataset.bookId) {
+                        let bookIndex = this.bookShelf.indexOf(book);
+                        this.bookShelf.splice(bookIndex, 1);
+                        console.log(this.bookShelf)
                     }
                 })
                 e.composedPath()[3].remove();
