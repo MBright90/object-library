@@ -1,6 +1,8 @@
 import APIManager from "./utilities/utilities.js";
 
-const librarian = new APIManager('https://www.googleapis.com/books/v1/volumes?q=', 
+let bookApiEndpoint = 'https://www.googleapis.com/books/v1/volumes?q=';
+
+const librarian = new APIManager(bookApiEndpoint, 
                                  'AIzaSyCChOno95k5f75fCh9zynvxwo4qTf-5D4Q')
 
 // ---------- Creating initial example book objects ---------- //
