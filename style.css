@@ -54,6 +54,7 @@ main .sidebar .sidebar-buttons {
     align-items: center;
 }
 
+
 main .sidebar button,
 .book-form-background .book-form-container button {
     border: 2px solid black;
@@ -174,6 +175,7 @@ main .sidebar a {
 
 /* -------------------- new Book Form -------------------- */
 
+.about-page-background,
 .book-form-background {
     position: absolute;
     background-color: rgba(0, 0, 0, 0.4);
@@ -188,6 +190,7 @@ main .sidebar a {
     align-items: center;
 }
 
+.about-page-background .about-page-container,
 .book-form-background .book-form-container {
     background-color: white;
     box-shadow: 7px 8px 8px rgba(0, 0, 0, 0.8);
@@ -248,3 +251,13 @@ main .sidebar a {
 .book-form-background .book-form-container form button {
     width: 100px;
 }
+
+.about-page-background .about-page-container p {
+    margin-top: 20px;
+    font-size: 24px;
+    text-align: left;
+}
+
+.about-page-background .about-page-container p:last-of-type {
+    text-align: center;
+} 
