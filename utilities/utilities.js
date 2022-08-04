@@ -111,15 +111,6 @@ export default class APIManager {
         return book;
     };
 
-    deleteBook(currentBook) {
-        this.bookShelf.forEach(book => {
-            if (book = currentBook) {
-                let bookIndex = this.bookShelf.indexOf(book);
-                this.bookShelf.splice(bookIndex, 1);
-            }
-        })
-    }
-
 };
 
 let bookIDCreator = 0;
