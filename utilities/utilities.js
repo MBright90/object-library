@@ -85,7 +85,6 @@ export default class APIManager {
                     if (book.bookID == e.composedPath()[3].dataset.bookId) {
                         let bookIndex = this.bookShelf.indexOf(book);
                         this.bookShelf.splice(bookIndex, 1);
-                        console.log(this.bookShelf)
                     }
                 })
                 e.composedPath()[3].remove();
@@ -111,6 +110,15 @@ export default class APIManager {
             });
         return book;
     };
+
+    deleteBook(currentBook) {
+        this.bookShelf.forEach(book => {
+            if (book = currentBook) {
+                let bookIndex = this.bookShelf.indexOf(book);
+                this.bookShelf.splice(bookIndex, 1);
+            }
+        })
+    }
 
 };
 
