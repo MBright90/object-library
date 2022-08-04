@@ -83,18 +83,31 @@ autofillBtn.addEventListener('click', () => {
 
 // ---------- Form visibility functions ---------- //
 
+let bookForm = document.querySelector('.book-form-background');
+let aboutPage = document.querySelector('.about-page-background');
+
 function showBookForm() {
-    let bookForm = document.querySelector('.book-form-background');
     if (bookForm.style.visibility != 'visible') {
         bookForm.style.visibility = 'visible';
     };
 };
 
 function cancelBookForm() {
-    let bookForm = document.querySelector('.book-form-background');
     if (bookForm.style.visibility === 'visible') {
         bookForm.style.visibility = 'hidden';
     };
+};
+
+function showAboutPage() {
+    if (aboutPage.style.visibility != 'visible') {
+        aboutPage.style.visibility = 'visible';
+    }
+};
+
+function closeAboutPage() {
+    if (aboutPage.style.visibility === 'visible') {
+        aboutPage.style.visibility = 'hidden';
+    }
 };
 
 let newFormButton = document.querySelector('.add-book-button');
@@ -102,6 +115,12 @@ newFormButton.addEventListener('click', showBookForm);
 
 let cancelFormButton = document.querySelector('button[type=reset]');
 cancelFormButton.addEventListener('click', cancelBookForm);
+
+let aboutPageButton = document.querySelector('.about-button');
+aboutPageButton.addEventListener('click', showAboutPage);
+
+let closeAboutButton = document.querySelector('.close-about-button');
+closeAboutButton.addEventListener('click', closeAboutPage);
 
 // -------------- Book sorting functions ------------- //
 
@@ -166,6 +185,19 @@ function removeAllCards() {
         card.remove()
     });
 };
+
+function resetLibrary() {
+    if (window.localStorage.getItem('userLibrary')) {
+        if (confirm('Delete Library?')) {
+            window.localStorage.removeItem('userLibrary')
+            librarian.bookShelf = [];
+            removeAllCards();
+        };
+    };
+};
+
+const resetLibraryButton = document.querySelector('.reset-button');
+resetLibraryButton.addEventListener('click', resetLibrary)
 
 // -------------- Library invocation ------------ //
 
