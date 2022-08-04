@@ -12,6 +12,8 @@ export default class APIManager {
                                      description,
                                      imageURL                  
         ));
+        let currentLibrary = JSON.stringify(this.bookShelf);
+        window.localStorage.setItem('userLibrary', currentLibrary) // Saving library state in local storage
         return true;
     };
 

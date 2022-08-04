@@ -5,37 +5,43 @@ let bookApiEndpoint = 'https://www.googleapis.com/books/v1/volumes?q=';
 const librarian = new APIManager(bookApiEndpoint, 
                                  'AIzaSyCChOno95k5f75fCh9zynvxwo4qTf-5D4Q')
 
-// ---------- Creating initial example book objects ---------- //
+// ---------- Creating initial example book objects // Retrieving local storage ---------- //
 
-librarian.addBookToLibrary('The Da Vinci Code',
-                           'Dan Brown',
-                           2003,
-                           'Robert Langdon, a professor who studies symbols and artifacts, chases down an age old scavenger hunt to find a secret that threatens to smash christianity wide open',
-                           'https://images-na.ssl-images-amazon.com/images/I/A15FFg6aNLL.jpg');
 
-librarian.addBookToLibrary('The Great gatsby',
-                           'F. Scott Fitzgerald',
-                           1925,
-                           'Nick Carroway tells of his neighbour, the mysterious millionaire Jay Gatsby, and his obsession to reunite with his former lover, Nick\'s cousin',
-                           'https://kbimages1-a.akamaihd.net/2411acbb-9daa-43fb-a5a2-a9aec064e17e/1200/1200/False/the-great-gatsby-238.jpg');
+if (window.localStorage.getItem('userLibrary')) {
+    let libraryString = window.localStorage.getItem('userLibrary');
+    librarian.bookShelf = JSON.parse(libraryString);
+} else {
+    librarian.addBookToLibrary('The Da Vinci Code',
+                            'Dan Brown',
+                            2003,
+                            'Robert Langdon, a professor who studies symbols and artifacts, chases down an age old scavenger hunt to find a secret that threatens to smash christianity wide open',
+                            'https://images-na.ssl-images-amazon.com/images/I/A15FFg6aNLL.jpg');
 
-librarian.addBookToLibrary('Robinson Crusoe',
-                           'Daniel Defoe',
-                           1719,
-                           'Driven from a loving family and a comfortable, secure life by an unswerving compulsion for the high seas, Crusoe finds successive misfortunes and escapes culminating in near-death disaster and emerging as lone survivor.',
-                           'https://www.booksoftitans.com/wp-content/uploads/2019/02/robinson-crusoe.jpg');
+    librarian.addBookToLibrary('The Great gatsby',
+                            'F. Scott Fitzgerald',
+                            1925,
+                            'Nick Carroway tells of his neighbour, the mysterious millionaire Jay Gatsby, and his obsession to reunite with his former lover, Nick\'s cousin',
+                            'https://kbimages1-a.akamaihd.net/2411acbb-9daa-43fb-a5a2-a9aec064e17e/1200/1200/False/the-great-gatsby-238.jpg');
 
-librarian.addBookToLibrary('Harry Potter and the Goblet of Fire',
-                           'J.K. Rowling',
-                           2000,
-                           'When Harry gets chosen as the fourth participant in the inter-school Triwizard Tournament, he is unwittingly pulled into a dark conspiracy that slowly unveils its dangerous agenda.',
-                           'https://images-na.ssl-images-amazon.com/images/I/91ZXAG2umhL.jpg');
+    librarian.addBookToLibrary('Robinson Crusoe',
+                            'Daniel Defoe',
+                            1719,
+                            'Driven from a loving family and a comfortable, secure life by an unswerving compulsion for the high seas, Crusoe finds successive misfortunes and escapes culminating in near-death disaster and emerging as lone survivor.',
+                            'https://www.booksoftitans.com/wp-content/uploads/2019/02/robinson-crusoe.jpg');
 
-librarian.addBookToLibrary('Bridget Jones\' Diary',
-                           'Helen Fielding',
-                           1996,
-                           'Written in the form of a personal diary, the novel chronicles a year in the life of Bridget Jones, a thirty-something single working woman living in London.',
-                           'https://images.penguinrandomhouse.com/cover/9780140280098');
+    librarian.addBookToLibrary('Harry Potter and the Goblet of Fire',
+                            'J.K. Rowling',
+                            2000,
+                            'When Harry gets chosen as the fourth participant in the inter-school Triwizard Tournament, he is unwittingly pulled into a dark conspiracy that slowly unveils its dangerous agenda.',
+                            'https://images-na.ssl-images-amazon.com/images/I/91ZXAG2umhL.jpg');
+
+    librarian.addBookToLibrary('Bridget Jones\' Diary',
+                            'Helen Fielding',
+                            1996,
+                            'Written in the form of a personal diary, the novel chronicles a year in the life of Bridget Jones, a thirty-something single working woman living in London.',
+                            'https://images.penguinrandomhouse.com/cover/9780140280098');
+};
 
 // ---------- Form completion and data retrieval ---------- //
 
@@ -46,8 +52,6 @@ const descriptionInput = document.querySelector('#book-description');
 const imageInput = document.querySelector('#book-cover-url');
 
 function parseFormData() {
-    console.log('Parsing Data')
-
     if (librarian.addBookToLibrary(titleInput.value,
                                    authorInput.value,
                                    yearInput.value,
@@ -163,7 +167,8 @@ function removeAllCards() {
     });
 };
 
-// -------------- Example invocation ------------ //
+// -------------- Library invocation ------------ //
+
 
 librarian.bookShelf.forEach(book => {
     librarian.createNewCard(book)
