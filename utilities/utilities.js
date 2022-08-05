@@ -5,6 +5,11 @@ export default class APIManager {
         this.bookShelf = [];
     };
 
+    saveCurrentLibrary() {
+        let currentLibrary = JSON.stringify(this.bookShelf);
+        window.localStorage.setItem('userLibrary', currentLibrary) // Saving library state in local storage
+    }
+
     addBookToLibrary(title, author, year, description, imageURL) {
         this.bookShelf.push(new Book(title,
                                      author,
@@ -12,8 +17,7 @@ export default class APIManager {
                                      description,
                                      imageURL                  
         ));
-        let currentLibrary = JSON.stringify(this.bookShelf);
-        window.localStorage.setItem('userLibrary', currentLibrary) // Saving library state in local storage
+        this.saveCurrentLibrary();
         return true;
     };
 
@@ -75,6 +79,7 @@ export default class APIManager {
                         book.hasRead = false;
                     };
                 };
+            this.saveCurrentLibrary();
             });
         });
     
@@ -88,6 +93,7 @@ export default class APIManager {
                     }
                 })
                 e.composedPath()[3].remove();
+                this.saveCurrentLibrary();
             };
         });
     };
