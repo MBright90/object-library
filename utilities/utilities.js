@@ -93,7 +93,7 @@ export default class APIManager {
     };
 
     returnTitle(title) {
-        let book = fetch(`${this.endpoint}${title}:inTitle:orderBy=relevance&key=${this.key}`)
+        let book = fetch(`${this.endpoint}${title}&inTitle&orderBy=relevance&key=${this.key}`)
             .then(response => response.json())
             .then((response) => {
                 let bookInfo = response.items[0].volumeInfo;
