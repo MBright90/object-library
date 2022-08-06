@@ -20,7 +20,9 @@ header {
     align-items: center;
     justify-content: center;
     height: 80px;
-    position: relative;
+    position: absolute;
+    top: 0;
+    width: 100%;
 }
 
 header h1 {
@@ -71,6 +73,7 @@ header .menu-container .dropdown-container button:hover {
 main {
     display: flex;
     flex-direction: column;
+    padding-top: 80px;
     min-height: calc(100vh - 80px);
 }
 
@@ -137,7 +140,7 @@ main .sidebar a {
     height: calc(100vh - 80px);
     gap: 20px;
     /* padding: 20px; */
-    padding: 5px;
+    padding: 15px 5px 5px 5px;
     overflow-y: auto;
 }
 
@@ -262,6 +265,7 @@ main .sidebar a {
 
 .book-form-container form input[type=text],
 .book-form-container form input[type=number],
+.book-form-container form input[type=url],
 .book-form-container form textarea {
     font-size: 16px;
     padding: 3px;
@@ -331,5 +335,44 @@ main .sidebar a {
 
     .card-deck {
         padding: 20px;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    header {
+        height: 50px;
+    }
+    
+    header h1 {
+        font-size: 2rem;
+    }
+
+    header .menu-container {
+        right: 5px
+    }
+
+    header .menu-container .menu-button,
+    header .menu-container .dropdown-container button {
+        font-size: 1rem;
+    }
+
+    header .menu-container .dropdown-container {
+        top: 45px;
+        height: 400px;
+        width: 300px;
+    }
+
+    .card-deck {
+        display: flex;
+        flex-direction: column;
+        flex-shrink: 1;
+    }
+
+    .card-deck .card {
+        max-height: 250px;
+    }
+
+    .card-deck .card:first-of-type {
+        margin-top: 5px;
     }
 }
