@@ -109,7 +109,6 @@ dropDownButton.addEventListener('click', () => {
     window.addEventListener('click', (e) => {
        if (e.composedPath()[2] != document.querySelector('.menu-container')) { // Removes menu when clicking elsewhere on the page
         removeDropMenu();
-        removeMenuListener();
        };
     });
 });
