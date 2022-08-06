@@ -249,7 +249,7 @@ main .sidebar a {
     flex-direction: column;
     grid-template-columns: auto 1fr;
     grid-template-rows: repeat(6, auto);
-    gap: 20px;
+    gap: 5px;
     /* margin: 40px 0; */
 }
 
@@ -258,11 +258,12 @@ main .sidebar a {
     align-items: flex-start;
     justify-content: flex-start;
     font-size: 24px;
+    margin-top: 5px;
 }
 
 .book-form-background .book-form-container form>button {
     grid-area: 2 / 1 / 2 / 3;
-    align-self: flex-start;
+    align-self: flex-end;
     justify-self: flex-end;
 }
 
@@ -341,12 +342,20 @@ main .sidebar a {
         padding: 20px;
     }
 
+    .book-form-background .book-form-container {
+        width: 650px;
+    }
+
     .book-form-background .book-form-container form {
         display: grid;
         grid-template-columns: auto 1fr;
         grid-template-rows: repeat(6, auto);
         gap: 20px;
-        margin: 0 0 40px 0;
+        margin: 40px 0;
+    }
+
+    .book-form-background .book-form-container form label {
+        justify-self: flex-end;
     }
 }
 
@@ -395,4 +404,15 @@ main .sidebar a {
     .card-deck .card:first-of-type {
         margin-top: 5px;
     }
+
+    .book-form-background .book-form-container label {
+        margin-top: 5px;
+    }
+
+    .about-page-background .about-page-container p {
+        margin-top: 20px;
+        font-size: 16px;
+        text-align: left;
+    }
+    
 }
