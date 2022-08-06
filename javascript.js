@@ -5,7 +5,7 @@ let bookApiEndpoint = 'https://www.googleapis.com/books/v1/volumes?q=';
 const librarian = new APIManager(bookApiEndpoint, 
                                  'AIzaSyCChOno95k5f75fCh9zynvxwo4qTf-5D4Q')
 
-// ---------- Creating initial example book objects // Retrieving local storage ---------- //
+// ---------- Retrieving local storage // Creating initial example book objects ---------- //
 
 
 if (window.localStorage.getItem('userLibrary')) {
@@ -81,7 +81,39 @@ autofillBtn.addEventListener('click', () => {
     })
 });
 
-// ---------- Form visibility functions ---------- //
+// ---------- Form/menu visibility functions ---------- //
+
+let dropDownMenu = document.querySelector('.dropdown-container');
+
+function showDropMenu() {
+    if (dropDownMenu.dataset.menuVisible != 'true') {
+        dropDownMenu.style.visibility = 'visible';
+        dropDownMenu.dataset.menuVisible = 'true';
+        dropDownButton.style = 'border: 5px solid #FFFFFF; border-radius: 5px;'
+    } else {
+        removeDropMenu();
+    };
+};
+
+function removeDropMenu() {
+    if (dropDownMenu.dataset.menuVisible === 'true') {
+        dropDownMenu.style.visibility = 'hidden';
+        dropDownMenu.dataset.menuVisible = 'false';
+        dropDownButton.style.border = 'none';
+    }
+};
+
+let dropDownButton = document.querySelector('.menu-button');
+dropDownButton.addEventListener('click', () => {
+    showDropMenu();
+    window.addEventListener('click', (e) => {
+       if (e.composedPath()[2] != document.querySelector('.menu-container')) { // Removes menu when clicking elsewhere on the page
+        removeDropMenu();
+        removeMenuListener();
+       };
+    });
+});
+
 
 let bookForm = document.querySelector('.book-form-background');
 let aboutPage = document.querySelector('.about-page-background');
@@ -90,6 +122,7 @@ function showBookForm() {
     if (bookForm.style.visibility != 'visible') {
         bookForm.style.visibility = 'visible';
     };
+    removeDropMenu();
 };
 
 function cancelBookForm() {
@@ -101,7 +134,8 @@ function cancelBookForm() {
 function showAboutPage() {
     if (aboutPage.style.visibility != 'visible') {
         aboutPage.style.visibility = 'visible';
-    }
+    };
+    removeDropMenu();
 };
 
 function closeAboutPage() {
@@ -110,14 +144,18 @@ function closeAboutPage() {
     }
 };
 
-let newFormButton = document.querySelector('.add-book-button');
-newFormButton.addEventListener('click', showBookForm);
+let newFormButtons = document.querySelectorAll('.add-book-button');
+newFormButtons.forEach(button => {
+    button.addEventListener('click', showBookForm);
+});
 
 let cancelFormButton = document.querySelector('button[type=reset]');
 cancelFormButton.addEventListener('click', cancelBookForm);
 
-let aboutPageButton = document.querySelector('.about-button');
-aboutPageButton.addEventListener('click', showAboutPage);
+let aboutPageButtons = document.querySelectorAll('.about-button');
+aboutPageButtons.forEach(button => {
+    button.addEventListener('click', showAboutPage);
+});
 
 let closeAboutButton = document.querySelector('.close-about-button');
 closeAboutButton.addEventListener('click', closeAboutPage);
@@ -160,21 +198,27 @@ function checkTitle(title) {
     return title;
 };
 
-let sortYear = document.querySelector('.sort-year-button');
-sortYear.addEventListener('click', () => {
-    removeAllCards();
-    librarian.bookShelf.sort(compareBooksYear).forEach(book => {
-        librarian.createNewCard(book);
+let sortYearButtons = document.querySelectorAll('.sort-year-button');
+sortYearButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        removeDropMenu();
+        removeAllCards();
+        librarian.bookShelf.sort(compareBooksYear).forEach(book => {
+            librarian.createNewCard(book);
+        })
     })
-})
+});
 
-let sortAZ = document.querySelector('.sort-az-button');
-sortAZ.addEventListener('click', () => {
-    removeAllCards();
-    librarian.bookShelf.sort(compareBooksAZ).forEach(book => {
-        librarian.createNewCard(book);
-    });
-}) ;
+let sortAZButtons = document.querySelectorAll('.sort-az-button');
+sortAZButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        removeDropMenu();
+        removeAllCards();
+        librarian.bookShelf.sort(compareBooksAZ).forEach(book => {
+            librarian.createNewCard(book);
+        });
+    }) ;
+});
 
 // ---------------- Card removal functions -------------- //
 
@@ -188,6 +232,7 @@ function removeAllCards() {
 
 function resetLibrary() {
     if (window.localStorage.getItem('userLibrary')) {
+        removeDropMenu();
         if (confirm('Delete Library?')) {
             window.localStorage.removeItem('userLibrary')
             librarian.bookShelf = [];
@@ -196,8 +241,10 @@ function resetLibrary() {
     };
 };
 
-const resetLibraryButton = document.querySelector('.reset-button');
-resetLibraryButton.addEventListener('click', resetLibrary)
+const resetLibraryButtons = document.querySelectorAll('.reset-button');
+resetLibraryButtons.forEach(button => {
+    button.addEventListener('click', resetLibrary)
+});
 
 // -------------- Library invocation ------------ //
 
