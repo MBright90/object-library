@@ -12,7 +12,7 @@ body {
     min-height: 100vh;
 }
 
-/* -------------------- Header -------------------- */
+/* -------------------- Header and dropdown menu -------------------- */
 
 header {
     background-color: #003865;
@@ -20,6 +20,7 @@ header {
     align-items: center;
     justify-content: center;
     height: 80px;
+    position: relative;
 }
 
 header h1 {
@@ -28,22 +29,62 @@ header h1 {
     font-family: 'Lobster', 'cursive';
 }
 
-/* -------------------- Sidebar -------------------- */
+header .menu-container {
+    position: absolute;
+    right: 30px;
+}
+
+header .menu-button {
+    background-color: inherit;
+    border: none;
+    color: #FFFFFF;
+    font-size: 40px;
+    padding: 5px;
+    width: 60px;
+}
+
+header .menu-button[menu-visible=true] {
+    border: 5px solid #FFFFFF;
+    border-radius: 5px;
+}
+
+header .menu-container .dropdown-container {
+    position: absolute;
+    display: flex;
+    top: 67px;
+    right: -30px;
+    height: 500px;
+    width: 300px;
+    flex-direction: column;
+    z-index: 1;
+}
+
+header .menu-container .dropdown-container button {
+    border: none;
+    font-size: 1.2rem;
+    padding: 3px 5px;
+    flex-grow: 1;
+}
+
+header .menu-container .dropdown-container button:hover {
+    background-color: #DDDDDD;
+}
+
+/* --------------------------- Main and sidebar -------------------------- */
 
 main {
-    display: grid;
-    grid-template: 1fr / 300px 5fr;
+    display: flex;
+    flex-direction: column;
     min-height: calc(100vh - 80px);
 }
 
 main .sidebar {
     box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.8);
-    display: grid;
     align-content: center;
     justify-items: center;
     grid-template-rows: 1fr auto;
     gap: 20px;
-    flex-direction: column;
+    display: none;
 }
 
 main .sidebar .sidebar-buttons {
@@ -103,7 +144,8 @@ main .sidebar a {
     grid-auto-rows: 250px;
     height: calc(100vh - 80px);
     gap: 20px;
-    padding: 20px;
+    /* padding: 20px; */
+    padding: 5px;
     overflow-y: auto;
 }
 
@@ -188,7 +230,7 @@ main .sidebar a {
     left: 0;
     right: 0;
     visibility: hidden;
-
+    z-index: 2;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -276,4 +318,26 @@ main .sidebar a {
 .about-page-background .about-page-container button:hover {
     bottom: 22px;
     box-shadow: 0 3px 3px rgba(0, 0, 0, 0.8);
+}
+
+/* MEDIA QUERIES */
+
+@media screen and (min-width: 780px) {
+
+    header .menu-container {
+        /* display: none; */
+    }
+
+    main {
+        display: grid;
+        grid-template: 1fr / 300px 5fr;
+    }
+
+    main .sidebar {
+        display: grid;
+    }
+
+    .card-deck {
+        padding: 20px;
+    }
 }
