@@ -331,7 +331,7 @@ main .sidebar a {
 
 .stats-page-background .stats-page-container p {
     color: #003865;
-    font-size: 24px;
+    font-size: 30px;
     font-weight: bold;
     text-align: center;
 }
@@ -422,6 +422,10 @@ main .sidebar a {
 
     .card-deck .card:first-of-type {
         margin-top: 5px;
+    }
+
+    .book-form-background .book-form-container h1 {
+        display: none;
     }
 
     .book-form-background .book-form-container label {
