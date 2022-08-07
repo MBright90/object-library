@@ -102,7 +102,8 @@ main .sidebar .sidebar-buttons .stats-button {
 
 main .sidebar button,
 .about-page-background .about-page-container button,
-.book-form-background .book-form-container button {
+.book-form-background .book-form-container button,
+.stats-page-background .stats-page-container button {
     border: 2px solid black;
     border-radius: 3px;
     font-size: 1.2rem;
@@ -215,10 +216,11 @@ main .sidebar a {
     right: 10px;
 }
 
-/* -------------------- new Book Form -------------------- */
+/* -------------------- New Book Form and About/Stats pages -------------------- */
 
 .about-page-background,
-.book-form-background {
+.book-form-background,
+.stats-page-background {
     position: absolute;
     background-color: rgba(0, 0, 0, 0.4);
     top: 0;
@@ -233,7 +235,8 @@ main .sidebar a {
 }
 
 .about-page-background .about-page-container,
-.book-form-background .book-form-container {
+.book-form-background .book-form-container,
+.stats-page-container {
     background-color: white;
     box-shadow: 7px 8px 8px rgba(0, 0, 0, 0.8);
     border-radius: 10px;
@@ -310,7 +313,8 @@ main .sidebar a {
     text-align: center;
 } 
 
-.about-page-background .about-page-container button {
+.about-page-background .about-page-container button,
+.stats-page-background .stats-page-container button {
     position: absolute;
     bottom: 20px;
     right: 30px;
@@ -319,6 +323,17 @@ main .sidebar a {
 .about-page-background .about-page-container button:hover {
     bottom: 22px;
     box-shadow: 0 3px 3px rgba(0, 0, 0, 0.8);
+}
+
+.stats-page-background .stats-page-container h3 {
+    margin: 20px 0 10px;
+}
+
+.stats-page-background .stats-page-container p {
+    color: #003865;
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
 }
 
 /* MEDIA QUERIES */
@@ -366,6 +381,10 @@ main .sidebar a {
     
     header h1 {
         font-size: 2rem;
+    }
+
+    header .menu-button {
+        width: 40px;
     }
 
     header .menu-container {
