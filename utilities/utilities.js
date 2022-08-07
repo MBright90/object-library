@@ -10,12 +10,13 @@ export default class APIManager {
         window.localStorage.setItem('userLibrary', currentLibrary) // Saving library state in local storage
     }
 
-    addBookToLibrary(title, author, year, description, imageURL) {
+    addBookToLibrary(title, author, year, description, imageURL, pageCount) {
         this.bookShelf.push(new Book(title,
                                      author,
                                      year || null,
                                      description,
-                                     imageURL                  
+                                     imageURL,
+                                     pageCount                  
         ));
         this.saveCurrentLibrary();
         return true;
@@ -109,7 +110,8 @@ export default class APIManager {
                     author: bookInfo.authors[0],
                     year: bookInfo.publishedDate.split('-')[0],
                     description: bookInfo.description,
-                    imageURL: bookInfo.imageLinks.thumbnail
+                    imageURL: bookInfo.imageLinks.thumbnail,
+                    pageCount: bookInfo.pageCount
                 };
 
                 return bookStuff;
@@ -117,18 +119,46 @@ export default class APIManager {
         return book;
     };
 
+    countBooksRead() {
+        let readBookCount = 0;
+        this.bookShelf.forEach(book => {
+            if (book.hasRead) readBookCount++;
+        })
+        console.log(readBookCount)
+        return readBookCount;
+    };
+
+    countTotalPages() {
+        let totalPageCount = 0;
+        this.bookShelf.forEach(book => {
+            totalPageCount += book.pageCount;
+        })
+        console.log(totalPageCount)
+        return totalPageCount;
+    };
+
+    countPagesRead() {
+        let readPageCount = 0;
+        this.bookShelf.forEach(book => {
+            if (book.hasRead) readPageCount += book.pageCount;
+        })
+        console.log(readPageCount)
+        return readPageCount;
+    };
+
 };
 
 let bookIDCreator = 0;
 
 class Book {
-    constructor(title, author, year, description, imageURL) {
+    constructor(title, author, year, description, imageURL, pageCount) {
         this.title = title.trim(),
         this.author = author,
         this.year = year,
         this.description = description,
         this.imageURL = imageURL,
         this.hasRead = false,
+        this.pageCount = pageCount || 0,
         this.bookID = bookIDCreator + 1,
         bookIDCreator += 1
     };
