@@ -7,17 +7,20 @@ export default class APIManager {
 
     saveCurrentLibrary() {
         let currentLibrary = JSON.stringify(this.bookShelf);
-        window.localStorage.setItem('userLibrary', currentLibrary) // Saving library state in local storage
+        window.localStorage.setItem('userLibrary', currentLibrary); // Saving library state in local storage
     }
 
     addBookToLibrary(title, author, year, description, imageURL, pageCount) {
+        console.log(`AddBookToLibrary: ${pageCount}`)
         this.bookShelf.push(new Book(title,
                                      author,
                                      year || null,
                                      description,
                                      imageURL,
-                                     pageCount                  
+                                     pageCount,
+                                     this.bookShelf.length + 1               
         ));
+        console.log(this.bookShelf[this.bookShelf.length - 1].pageCount)
         this.saveCurrentLibrary();
         return true;
     };
@@ -71,6 +74,8 @@ export default class APIManager {
         readButton.addEventListener('click', (e) => {
             let bookID = parseInt(e.composedPath()[3].dataset.bookId);
             this.bookShelf.forEach(book => {
+                console.log(book.bookID);
+                console.log(bookID);
                 if (book.bookID === bookID) {
                     if (!book.hasRead) {
                         e.composedPath()[1].style= 'background-color: #3CCF4E; color: #FFFFFF';
@@ -105,6 +110,8 @@ export default class APIManager {
             .then((response) => {
                 let bookInfo = response.items[0].volumeInfo;
 
+                console.log(`Page Count: ${bookInfo.pageCount}`)
+
                 let bookStuff =  {
                     title: bookInfo.title,
                     author: bookInfo.authors[0],
@@ -116,15 +123,18 @@ export default class APIManager {
 
                 return bookStuff;
             });
+            console.log(book)
         return book;
     };
 
     countBooksRead() {
         let readBookCount = 0;
+        console.log(this.bookShelf);
         this.bookShelf.forEach(book => {
             if (book.hasRead) readBookCount++;
         })
         console.log(readBookCount)
+        console.log(this.bookShelf)
         return readBookCount;
     };
 
@@ -133,7 +143,6 @@ export default class APIManager {
         this.bookShelf.forEach(book => {
             totalPageCount += book.pageCount;
         })
-        console.log(totalPageCount)
         return totalPageCount;
     };
 
@@ -142,16 +151,13 @@ export default class APIManager {
         this.bookShelf.forEach(book => {
             if (book.hasRead) readPageCount += book.pageCount;
         })
-        console.log(readPageCount)
         return readPageCount;
     };
 
 };
 
-let bookIDCreator = 0;
-
 class Book {
-    constructor(title, author, year, description, imageURL, pageCount) {
+    constructor(title, author, year, description, imageURL, pageCount, bookID) {
         this.title = title.trim(),
         this.author = author,
         this.year = year,
@@ -159,7 +165,6 @@ class Book {
         this.imageURL = imageURL,
         this.hasRead = false,
         this.pageCount = pageCount || 0,
-        this.bookID = bookIDCreator + 1,
-        bookIDCreator += 1
+        this.bookID = bookID
     };
 };
