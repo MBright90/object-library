@@ -12,36 +12,63 @@ if (window.localStorage.getItem('userLibrary')) {
     let libraryString = window.localStorage.getItem('userLibrary');
     librarian.bookShelf = JSON.parse(libraryString);
 } else {
-    librarian.addBookToLibrary('The Da Vinci Code',
-                            'Dan Brown',
-                            2003,
-                            'Robert Langdon, a professor who studies symbols and artifacts, chases down an age old scavenger hunt to find a secret that threatens to smash christianity wide open',
-                            'https://images-na.ssl-images-amazon.com/images/I/A15FFg6aNLL.jpg');
 
-    librarian.addBookToLibrary('The Great gatsby',
-                            'F. Scott Fitzgerald',
-                            1925,
-                            'Nick Carroway tells of his neighbour, the mysterious millionaire Jay Gatsby, and his obsession to reunite with his former lover, Nick\'s cousin',
-                            'https://kbimages1-a.akamaihd.net/2411acbb-9daa-43fb-a5a2-a9aec064e17e/1200/1200/False/the-great-gatsby-238.jpg');
+    librarian.returnTitle('the Da Vinci Code')
+        .then((response) => {
+            librarian.addBookToLibrary(response.title,
+                                       response.author,
+                                       response.year,
+                                       response.description,
+                                       response.imageURL,
+                                       response.pageCount)
+        })
 
-    librarian.addBookToLibrary('Robinson Crusoe',
-                            'Daniel Defoe',
-                            1719,
-                            'Driven from a loving family and a comfortable, secure life by an unswerving compulsion for the high seas, Crusoe finds successive misfortunes and escapes culminating in near-death disaster and emerging as lone survivor.',
-                            'https://www.booksoftitans.com/wp-content/uploads/2019/02/robinson-crusoe.jpg');
+    librarian.returnTitle('The Great Gatsby')
+        .then((response) => {
+            librarian.addBookToLibrary(response.title,
+                                       response.author,
+                                       response.year,
+                                       response.description,
+                                       response.imageURL,
+                                       response.pageCount)
+        })
 
-    librarian.addBookToLibrary('Harry Potter and the Goblet of Fire',
-                            'J.K. Rowling',
-                            2000,
-                            'When Harry gets chosen as the fourth participant in the inter-school Triwizard Tournament, he is unwittingly pulled into a dark conspiracy that slowly unveils its dangerous agenda.',
-                            'https://images-na.ssl-images-amazon.com/images/I/91ZXAG2umhL.jpg');
+    librarian.returnTitle('The Fellowship of the Ring')
+        .then((response) => {
+            librarian.addBookToLibrary(response.title,
+                                       response.author,
+                                       response.year,
+                                       response.description,
+                                       response.imageURL,
+                                       response.pageCount)
+        })
 
-    librarian.addBookToLibrary('Bridget Jones\' Diary',
-                            'Helen Fielding',
-                            1996,
-                            'Written in the form of a personal diary, the novel chronicles a year in the life of Bridget Jones, a thirty-something single working woman living in London.',
-                            'https://images.penguinrandomhouse.com/cover/9780140280098');
-};
+    librarian.returnTitle('The Goblet of Fire')
+        .then((response) => {
+            librarian.addBookToLibrary(response.title,
+                                       response.author,
+                                       response.year,
+                                       response.description,
+                                       response.imageURL,
+                                       response.pageCount)
+        })
+
+    librarian.returnTitle('Bridget Jones')
+        .then((response) => {
+            librarian.addBookToLibrary(response.title,
+                                       response.author,
+                                       response.year,
+                                       response.description,
+                                       response.imageURL,
+                                       response.pageCount)
+
+
+        librarian.bookShelf.forEach(book => {
+            librarian.createNewCard(book)
+        })
+    })
+
+}
 
 // ---------- Form completion and data retrieval ---------- //
 
@@ -50,13 +77,15 @@ const authorInput = document.querySelector('#book-author');
 const yearInput = document.querySelector('#book-year');
 const descriptionInput = document.querySelector('#book-description');
 const imageInput = document.querySelector('#book-cover-url');
+const pagesInput = document.querySelector('#book-pages')
 
 function parseFormData() {
     if (librarian.addBookToLibrary(titleInput.value,
                                    authorInput.value,
                                    yearInput.value,
                                    descriptionInput.value,
-                                   imageInput.value
+                                   imageInput.value,
+                                   parseInt(pagesInput.value)
     )) {
         librarian.createNewCard(librarian.bookShelf[librarian.bookShelf.length - 1])
         cancelBookForm();
@@ -76,6 +105,7 @@ autofillBtn.addEventListener('click', () => {
         titleInput.value = response.title;
         authorInput.value = response.author;
         yearInput.value = response.year;
+        pagesInput.value = response.pageCount;
         descriptionInput.value = response.description;
         imageInput.value = response.imageURL;
     })
@@ -219,6 +249,43 @@ sortAZButtons.forEach(button => {
     }) ;
 });
 
+
+// ---------------- Stat creation functions -------------- //
+
+let totalBooksPara = document.querySelector('.total-books');
+let booksReadPara = document.querySelector('.books-read');
+let totalPagesPara = document.querySelector('.total-pages');
+let pagesReadPara = document.querySelector('.pages-read');
+
+function updateStats() {
+    totalBooksPara.textContent = librarian.bookShelf.length;
+    booksReadPara.textContent = librarian.countBooksRead();
+    totalPagesPara.textContent = librarian.countTotalPages();
+    pagesReadPara.textContent = librarian.countPagesRead();
+}
+
+let statsPage = document.querySelector('.stats-page-background');
+
+function showStatsPage() {
+    if (statsPage.style.visibility != 'visible') {
+        statsPage.style.visibility = 'visible';
+    }
+}
+
+let statsButtons = document.querySelectorAll('.stats-button');
+statsButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        updateStats();
+        showStatsPage();
+    })
+})
+
+
+let closeStatsButton = document.querySelector('.close-stats-button')
+closeStatsButton.addEventListener('click', () => {
+    statsPage.style.visibility = 'hidden';
+});
+
 // ---------------- Card removal functions -------------- //
 
 
@@ -251,3 +318,5 @@ resetLibraryButtons.forEach(button => {
 librarian.bookShelf.forEach(book => {
     librarian.createNewCard(book)
 });
+
+console.log(librarian.bookShelf)
