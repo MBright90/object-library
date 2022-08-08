@@ -1,4 +1,4 @@
-import APIManager from "./utilities/utilities.js";
+import {APIManager, sortingObject} from "./utilities/utilities.js";
 
 let bookApiEndpoint = 'https://www.googleapis.com/books/v1/volumes?q=';
 
@@ -191,40 +191,29 @@ closeAboutButton.addEventListener('click', closeAboutPage);
 
 // -------------- Book sorting functions ------------- //
 
-function compareBooksYear(a, b) {
+const sortingHat = sortingObject();
 
-    if (a.year < b.year) {
-        return -1;
-    } else if (a.year > b.year) {
-        return 1;
-    } else {
-        return 0;
-    };
-};
+const toggleSortingOrder = nodeList => {
+    nodeList.forEach(button => {
 
-function compareBooksAZ(a, b) {
+        if (button.dataset.sortingOrder === "ascending") {
+            button.dataset.sortingOrder = "descending";
+            if (button.textContent === "Sort by A-Z") {
+                button.textContent = "Sort by Z-A";
+            } else {
+                button.textContent = "Sort by Newest";
+            };
 
-    let titleA = checkTitle(a.title.toLowerCase());
-    let titleB = checkTitle(b.title.toLowerCase());
+        } else {
+            button.dataset.sortingOrder = 'ascending';
+            if (button.textContent === "Sort by Z-A") {
+                button.textContent = "Sort by A-Z";
+            } else {
+                button.textContent = "Sort by Oldest";
+            };
+        };
 
-    if (titleA < titleB) {
-        return -1;
-    } else if (titleA > titleB) {
-        return 1;
-    } else {
-        return 0;
-    };
-
-};
-
-function checkTitle(title) {
-    let thePattern = new RegExp(/^(\bthe\b)/i);  // Removes 'the' from beginning of book titles, case insensitive
-
-    if (title.match(thePattern)) {
-        title = title.substring(title.indexOf(' ') + 1);
-    };
-
-    return title;
+    });
 };
 
 let sortYearButtons = document.querySelectorAll('.sort-year-button');
@@ -232,10 +221,11 @@ sortYearButtons.forEach(button => {
     button.addEventListener('click', () => {
         removeDropMenu();
         removeAllCards();
-        librarian.bookShelf.sort(compareBooksYear).forEach(book => {
+        librarian.bookShelf.sort(sortingHat.compareBooksYear).forEach(book => {
             librarian.createNewCard(book);
-        })
-    })
+        });
+        toggleSortingOrder(sortYearButtons);
+    });
 });
 
 let sortAZButtons = document.querySelectorAll('.sort-az-button');
@@ -243,10 +233,11 @@ sortAZButtons.forEach(button => {
     button.addEventListener('click', () => {
         removeDropMenu();
         removeAllCards();
-        librarian.bookShelf.sort(compareBooksAZ).forEach(book => {
+        librarian.bookShelf.sort(sortingHat.compareBooksAZ).forEach(book => {
             librarian.createNewCard(book);
         });
-    }) ;
+        toggleSortingOrder(sortAZButtons);
+    });
 });
 
 
@@ -318,5 +309,3 @@ resetLibraryButtons.forEach(button => {
 librarian.bookShelf.forEach(book => {
     librarian.createNewCard(book)
 });
-
-console.log(librarian.bookShelf)
