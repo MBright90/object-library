@@ -165,6 +165,9 @@ main .sidebar a {
 .card-deck .card .image {
     background-size: cover;
     background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
     width: 40%;
@@ -214,6 +217,20 @@ main .sidebar a {
 .card-deck .card .book-info a:last-of-type {
     top: 10px;
     right: 10px;
+}
+
+.card .image > div {
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 35%;
+    width: 100%;
+}
+
+.card .image > div > p {
+    color: #FFFFFF;
+    font-size: 34px;
 }
 
 /* -------------------- New Book Form and About/Stats pages -------------------- */
@@ -356,6 +373,18 @@ main .sidebar a {
 
     .card-deck {
         padding: 20px;
+    }
+
+    .card .image > div {
+        border-top-left-radius: 5px;
+        border-bottom-left-radius: 5px;
+        height: 100%;
+        opacity: 0;
+        transition: all ease-in .1s;
+    }
+
+    .card .image > div:hover {
+        opacity: 1;
     }
 
     .book-form-background .book-form-container {
