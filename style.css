@@ -387,7 +387,9 @@ main .sidebar a {
         opacity: 1;
     }
 
-    .book-form-background .book-form-container {
+    .book-form-background .book-form-container,
+    .stats-page-background .stats-page-container,
+    .about-page-background .about-page-container {
         width: 650px;
     }
 
