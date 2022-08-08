@@ -29,8 +29,8 @@
             <button class="menu-button" type="button"><i class="fa-solid fa-bars"></i></button>
             <div class="dropdown-container" data-menu-visible="false">
                 <button class="add-book-button" type="button">Add New Book</button>
-                <button class="sort-az-button" type="button">Sort by A-Z</button>
-                <button class="sort-year-button" type="button">Sort by Year</button>
+                <button class="sort-az-button" type="button" data-sorting-order="ascending">Sort by A-Z</button>
+                <button class="sort-year-button" type="button" data-sorting-order="ascending">Sort by Oldest</button>
                 <button class="stats-button" type="button">Stats</button>
                 <button class="reset-button" type="button">Reset Library</button>
                 <button class="about-button" type="button">About</button>
@@ -43,8 +43,8 @@
 
             <div class="sidebar-buttons">
                 <button class="add-book-button" type="button">Add New Book</button>
-                <button class="sort-az-button" type="button">Sort by A-Z</button>
-                <button class="sort-year-button" type="button">Sort by Year</button>
+                <button class="sort-az-button" type="button" data-sorting-order="ascending">Sort by A-Z</button>
+                <button class="sort-year-button" type="button" data-sorting-order="ascending">Sort by Oldest</button>
                 <button class="stats-button" type="button">Stats</button>
                 <button class="reset-button" type="button">Reset Library</button>
                 <button class="about-button" type="button">About</button>
@@ -108,10 +108,14 @@
                 <p>
                     This data is not sent to any third parties or even myself, it is purely
                     to enhance your experience and make sure your time is not wasted.
-                </p>
-                <p>
                     When using the autofill function on the book form, a call is made to Google Books API which returns the first match it 
-                    finds when searching by relevance
+                    finds when searching by relevance.
+                </p>
+
+                <p>
+                    When sorting by newest and oldest, you may notice that books are not always where you would expect them to be. This is because
+                    if you have used the autofill feature, the date used to sort through the books is the year the edition was published, as opposed
+                    to the year the book was first published.
                 </p>
 
                 <p>
