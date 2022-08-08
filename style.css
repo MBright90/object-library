@@ -114,7 +114,7 @@ main .sidebar button,
 }
 
 main .sidebar button {
-    width: 100%;
+    width: 150px;
 }
 
 main .sidebar button:hover,
@@ -320,7 +320,8 @@ main .sidebar a {
     right: 30px;
 }
 
-.about-page-background .about-page-container button:hover {
+.about-page-background .about-page-container button:hover,
+.stats-page-background .stats-page-container button:hover {
     bottom: 22px;
     box-shadow: 0 3px 3px rgba(0, 0, 0, 0.8);
 }
