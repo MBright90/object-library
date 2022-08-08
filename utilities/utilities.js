@@ -35,6 +35,13 @@ export class APIManager {
         const cardImage = document.createElement('div');
         cardImage.classList.add('image');
         cardImage.style.backgroundImage = `url('${newBook.imageURL}')`;
+
+        const pageBackground = document.createElement('div');
+        const pagePara = document.createElement('p');
+        const pageText = document.createTextNode(`${newBook.pageCount} pages`)
+        pagePara.appendChild(pageText);
+        pageBackground.appendChild(pagePara);
+        cardImage.appendChild(pageBackground);
     
         const bookInfo = document.createElement('div');
         bookInfo.classList.add('book-info');
