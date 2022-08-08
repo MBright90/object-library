@@ -1,4 +1,4 @@
-export default class APIManager {
+export class APIManager {
     constructor(endpoint, key) {
         this.endpoint = endpoint,
         this.key = key
@@ -168,3 +168,40 @@ class Book {
         this.bookID = bookID
     };
 };
+
+// experimenting with object initiation in place of class.
+const sortingProto = {
+
+    compareBooksYear(a, b) {
+
+        if (document.querySelector('.sort-year-button').dataset.sortingOrder === 'ascending') {
+            return a.year < b.year ? 1 : -1;
+        } else {
+            return a.year < b.year ? -1 : 1;
+        }
+    },
+    
+    compareBooksAZ(a, b) {
+
+        function checkTitle(title) {
+            let thePattern = new RegExp(/^(\bthe\b)/i);  // Removes 'the' from beginning of book titles, case insensitive
+        
+            if (title.match(thePattern)) {
+                title = title.substring(title.indexOf(' ') + 1);
+            };
+        
+            return title;
+        }
+    
+        let titleA = checkTitle(a.title.toLowerCase());
+        let titleB = checkTitle(b.title.toLowerCase());
+    
+        if (document.querySelector('.sort-az-button').dataset.sortingOrder === 'ascending') {
+            return titleA < titleB ? 1 : -1;
+        } else {
+            return titleA < titleB ? -1 : 1;
+        }     
+    },
+}
+
+export const sortingObject = () => Object.assign(Object.create(sortingProto))
