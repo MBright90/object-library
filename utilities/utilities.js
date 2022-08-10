@@ -20,7 +20,6 @@ export class APIManager {
                                      pageCount,
                                      this.bookShelf.length + 1               
         ));
-        console.log(this.bookShelf[this.bookShelf.length - 1].pageCount)
         this.saveCurrentLibrary();
         return true;
     };
@@ -81,8 +80,6 @@ export class APIManager {
         readButton.addEventListener('click', (e) => {
             let bookID = parseInt(e.composedPath()[3].dataset.bookId);
             this.bookShelf.forEach(book => {
-                console.log(book.bookID);
-                console.log(bookID);
                 if (book.bookID === bookID) {
                     if (!book.hasRead) {
                         e.composedPath()[1].style= 'background-color: #3CCF4E; color: #FFFFFF';
@@ -98,7 +95,6 @@ export class APIManager {
     
         deleteButton.addEventListener('click', (e) => {
             if (window.confirm('Delete card?')) {
-                console.log(this.bookShelf);
                 this.bookShelf.forEach(book => {
                     if (book.bookID == e.composedPath()[3].dataset.bookId) {
                         let bookIndex = this.bookShelf.indexOf(book);
@@ -116,9 +112,6 @@ export class APIManager {
             .then(response => response.json())
             .then((response) => {
                 let bookInfo = response.items[0].volumeInfo;
-
-                console.log(`Page Count: ${bookInfo.pageCount}`)
-
                 let bookStuff =  {
                     title: bookInfo.title,
                     author: bookInfo.authors[0],
@@ -130,18 +123,14 @@ export class APIManager {
 
                 return bookStuff;
             });
-            console.log(book)
         return book;
     };
 
     countBooksRead() {
         let readBookCount = 0;
-        console.log(this.bookShelf);
         this.bookShelf.forEach(book => {
             if (book.hasRead) readBookCount++;
         })
-        console.log(readBookCount)
-        console.log(this.bookShelf)
         return readBookCount;
     };
 
