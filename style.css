@@ -7,8 +7,24 @@
     user-select: none;
 }
 
+@font-face {
+    font-family: 'nobile-regular';
+    src: url('./fonts/nobile-regular-webfont.woff2') format('woff2'),
+         url('./fonts/nobile-regular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'nobile-bold';
+    src: url('./fonts/nobile-bold-webfont.woff2') format()'woff2',
+         url('./fonts/nobile-bold-webfont.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+}
+
 body {
-    font-family: 'Edu TAS Beginner', 'cursive';
+    font-family: 'nobile-regular', 'Edu TAS Beginner', 'cursive';
     height: 100vh;
     width: 100vw;
     overflow-y: hidden;
@@ -197,7 +213,7 @@ main .sidebar a {
 .card-deck .card .book-info p {
     height: auto;
     overflow-y: auto;
-    font-size: 18px;
+    font-size: 1rem;
 }
 
 .card-deck .card .book-info a{
@@ -322,7 +338,7 @@ main .sidebar a {
 
 .about-page-background .about-page-container p {
     margin-top: 20px;
-    font-size: 24px;
+    font-size: 1rem;
     text-align: left;
 }
 
@@ -349,7 +365,7 @@ main .sidebar a {
 
 .stats-page-background .stats-page-container p {
     color: #003865;
-    font-size: 30px;
+    font-size: 1.6rem;
     font-weight: bold;
     text-align: center;
 }
