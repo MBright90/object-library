@@ -1,0 +1,39 @@
+{
+  "name": "object-library",
+  "version": "1.0.0",
+  "description": "An app to act as a reading list",
+  "main": "javascript.js",
+  "scripts": {
+    "build": "webpack --config webpack.config.js",
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MBright90/object-library.git"
+  },
+  "keywords": [
+    "library",
+    "books"
+  ],
+  "author": "mBright90",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MBright90/object-library/issues"
+  },
+  "homepage": "https://github.com/MBright90/object-library#readme",
+  "devDependencies": {
+    "@babel/core": "^7.21.4",
+    "@babel/preset-env": "^7.21.4",
+    "babel-loader": "^9.1.2",
+    "css-loader": "^6.7.3",
+    "eslint": "^8.37.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "file-loader": "^6.2.0",
+    "prettier": "^2.8.7",
+    "style-loader": "^3.3.2",
+    "webpack": "^5.77.0",
+    "webpack-cli": "^5.0.1"
+  }
+}
