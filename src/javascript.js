@@ -3,7 +3,7 @@
 import APIManager from "./utilities/apiManager"
 import sortingObject from "./utilities/sortingObject"
 
-import "./style.css"
+import "./styles/style.css"
 
 const bookApiEndpoint = "https://www.googleapis.com/books/v1/volumes?q="
 
