@@ -28,9 +28,10 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: {
-          loader: "css-loader style-loader",
-        },
+        use: [
+          "style-loader",
+          { loader: "css-loader", options: { url: false } },
+        ],
       },
       {
         test: /\woff(2?)$/,
