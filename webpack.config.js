@@ -1,4 +1,5 @@
 const path = require("path")
+const CopyPlugin = require("copy-webpack-plugin")
 const HtmlWebpackPlugin = require("html-webpack-plugin")
 const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 
@@ -15,7 +16,10 @@ module.exports = {
       template: "./src/index.html",
     }),
     new MiniCssExtractPlugin({
-      filename: "style/style.css",
+      filename: "./styles/style.css",
+    }),
+    new CopyPlugin({
+      patterns: [{ from: "src/assets/fonts", to: "assets/fonts" }],
     }),
   ],
   module: {
@@ -38,11 +42,12 @@ module.exports = {
         ],
       },
       {
-        test: /\woff(2?)$/,
+        test: /\.woff(2)?$/,
         use: {
           loader: "file-loader",
           options: {
-            outputPath: "fonts",
+            name: "[name].[ext]",
+            outputPath: "./assets/fonts/",
           },
         },
       },
