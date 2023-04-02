@@ -9,16 +9,16 @@
 
 @font-face {
     font-family: 'nobile-regular';
-    src: url('./fonts/nobile-regular-webfont.woff2') format('woff2'),
-         url('./fonts/nobile-regular-webfont.woff') format('woff');
+    src: url('../assets/fonts/nobile-regular-webfont.woff2') format('woff2'),
+         url('../assets/fonts/nobile-regular-webfont.woff') format('woff');
     font-weight: normal;
     font-style: normal;
 }
 
 @font-face {
     font-family: 'nobile-bold';
-    src: url('./fonts/nobile-bold-webfont.woff2') format()'woff2',
-         url('./fonts/nobile-bold-webfont.woff') format('woff');
+    src: url('../assets/fonts/nobile-bold-webfont.woff2') format()'woff2',
+         url('../assets/fonts/nobile-bold-webfont.woff') format('woff');
     font-weight: bold;
     font-style: normal;
 }
