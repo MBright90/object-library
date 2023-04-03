@@ -52,6 +52,51 @@ header h1 {
     font-family: 'Lobster', 'cursive';
 }
 
+header .account {
+    color: #FFFFFF;
+    position: absolute;
+    left: 10px;
+}
+
+header .account .sign-in {
+    cursor: pointer;
+}
+
+header .account i {
+    border: 2px solid #FFFFFF;
+    border-radius: 50%;
+    padding: 3px;
+}
+
+.account p, .account i {
+    pointer-events: none;
+}
+
+.account .user-info {
+    display: grid;
+    grid-column-gap: 10px;
+    grid-template-areas: "pic name    "
+               "pic sign-out";
+} 
+
+.account .user-info .user-pic {
+    background-color: red;
+    border-radius: 50%;
+    grid-area: pic;
+    height: 40px;
+    width: 40px;
+}
+
+.account .user-info .user-name {
+    grid-area: name;
+}
+
+.account .user-info .sign-out-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
 header .menu-container {
     position: absolute;
     right: 30px;
