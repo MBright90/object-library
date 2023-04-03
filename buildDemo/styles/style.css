@@ -1,0 +1,492 @@
+/*!****************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./src/styles/style.css ***!
+  \****************************************************************************************************/
+*, html, body, a {
+    box-sizing: border-box;
+    color: inherit;
+    margin: 0 0 0 0;
+    padding: 0;
+    text-decoration: none;
+    user-select: none;
+}
+
+@font-face {
+    font-family: 'nobile-regular';
+    src: url('../assets/fonts/nobile-regular-webfont.woff2') format('woff2'),
+         url('../assets/fonts/nobile-regular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'nobile-bold';
+    src: url('../assets/fonts/nobile-bold-webfont.woff2') format()'woff2',
+         url('../assets/fonts/nobile-bold-webfont.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+}
+
+body {
+    font-family: 'nobile-regular', 'Edu TAS Beginner', 'cursive';
+    height: 100vh;
+    width: 100vw;
+    overflow-y: hidden;
+}
+
+/* -------------------- Header and dropdown menu -------------------- */
+
+header {
+    background-color: #003865;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 80px;
+    position: absolute;
+    top: 0;
+    width: 100%;
+}
+
+header h1 {
+    color: #FFF;
+    font-size: 2.4rem;
+    font-family: 'Lobster', 'cursive';
+}
+
+header .menu-container {
+    position: absolute;
+    right: 30px;
+}
+
+header .menu-button {
+    background-color: inherit;
+    border: none;
+    color: #FFFFFF;
+    font-size: 40px;
+    padding: 5px;
+    width: 70px;
+}
+
+header .menu-container .dropdown-container {
+    position: absolute;
+    display: flex;
+    top: 72px;
+    right: -30px;
+    height: 500px;
+    width: 300px;
+    flex-direction: column;
+    visibility: hidden;
+    z-index: 1;
+}
+
+header .menu-container .dropdown-container button {
+    border: none;
+    font-size: 1.2rem;
+    padding: 3px 5px;
+    flex-grow: 1;
+}
+
+header .menu-container .dropdown-container button:hover {
+    background-color: #DDDDDD;
+}
+
+/* --------------------------- Main and sidebar -------------------------- */
+
+main {
+    display: flex;
+    flex-direction: column;
+    padding-top: 80px;
+    min-height: calc(100vh - 80px);
+}
+
+main .sidebar {
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.8);
+    align-content: center;
+    justify-items: center;
+    grid-template-rows: 1fr auto;
+    gap: 20px;
+    display: none;
+}
+
+main .sidebar .sidebar-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+main .sidebar .sidebar-buttons .stats-button {
+    margin-top: auto;
+}
+
+
+main .sidebar button,
+.about-page-background .about-page-container button,
+.book-form-background .book-form-container button,
+.stats-page-background .stats-page-container button {
+    border: 2px solid black;
+    border-radius: 3px;
+    font-size: 1.2rem;
+    position: relative;
+    padding: 3px 5px;
+
+    transition: ease-in top .1s;
+}
+
+main .sidebar button {
+    width: 150px;
+}
+
+main .sidebar button:hover,
+.book-form-background .book-form-container button:hover {
+    top: 2px;
+    box-shadow: 0 3px 3px rgba(0, 0, 0, 0.8);
+}
+
+main .sidebar button:active,
+.form-buttons-container button:active {
+    background-color: #003865;
+    color: #FFFFFF;
+}
+
+main .sidebar a {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+/* -------------------- Card deck -------------------- */
+
+.card-deck {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    grid-auto-rows: 250px;
+    height: calc(100vh - 80px);
+    gap: 20px;
+    padding: 15px 5px 5px 5px;
+    overflow-y: auto;
+}
+
+.card-deck .card {
+    border: 2px solid rgba(0, 0, 0, 0.4);
+    border-radius: 10px;
+    box-shadow: 2px 3px 3px rgba(0, 0, 0, 0.8);
+    display: flex;
+    position: relative;
+    flex-direction: row;
+
+    transition: ease-in all .1s;
+}
+
+.card-deck .card:hover {
+    top: -5px;
+    box-shadow: 7px 8px 8px rgba(0, 0, 0, 0.8);
+}
+
+.card-deck .card .image {
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    width: 40%;
+}
+
+.card-deck .card .image[data-image=daVinci] {
+    background-image: url('https://images-na.ssl-images-amazon.com/images/I/A15FFg6aNLL.jpg');
+}
+
+.card-deck .card .image[data-image=gatsby] {
+    background-image: url('https://kbimages1-a.akamaihd.net/2411acbb-9daa-43fb-a5a2-a9aec064e17e/1200/1200/False/the-great-gatsby-238.jpg');
+}
+
+.card-deck .card .book-info {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
+    width: 60%;
+}
+
+.card-deck .card .book-info h3:nth-child(1) {
+    margin-top: 10px;
+    width: 70%;
+}
+
+.card-deck .card .book-info p {
+    height: auto;
+    overflow-y: auto;
+    font-size: 1rem;
+}
+
+.card-deck .card .book-info a{
+    position: absolute;
+    font-size: 24px;
+    opacity: 0.5;
+}
+
+.card-deck .card .book-info a:first-of-type {
+    border-radius: 50%;
+    top: 10px;
+    right: 50px;
+    text-align: center;
+    width: 30px;
+}
+
+.card-deck .card .book-info a:last-of-type {
+    top: 10px;
+    right: 10px;
+}
+
+.card .image > div {
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 35%;
+    width: 100%;
+}
+
+.card .image > div > p {
+    color: #FFFFFF;
+    font-size: 34px;
+}
+
+/* -------------------- New Book Form and About/Stats pages -------------------- */
+
+.about-page-background,
+.book-form-background,
+.stats-page-background {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.4);
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    visibility: hidden;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.about-page-background .about-page-container,
+.book-form-background .book-form-container,
+.stats-page-container {
+    background-color: white;
+    box-shadow: 7px 8px 8px rgba(0, 0, 0, 0.8);
+    border-radius: 10px;
+    text-align: center;
+    margin: 10px;
+    width: 90%;
+    padding: 40px;
+    position: relative;
+}
+
+.book-form-background .book-form-container form {
+    display: flex;
+    flex-direction: column;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: repeat(6, auto);
+    gap: 5px;
+    /* margin: 40px 0; */
+}
+
+.book-form-background .book-form-container form>label {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    font-size: 24px;
+    margin-top: 5px;
+}
+
+.book-form-background .book-form-container form>button {
+    grid-area: 2 / 1 / 2 / 3;
+    align-self: flex-end;
+    justify-self: flex-end;
+}
+
+.book-form-container form input[type=text],
+.book-form-container form input[type=number],
+.book-form-container form input[type=url],
+.book-form-container form textarea {
+    font-size: 16px;
+    padding: 3px;
+    width: 100%;
+}
+
+.book-form-container form input[type=text]:focus,
+.book-form-container form input[type=number]:focus,
+.book-form-container form textarea:focus {
+    border-radius: 5px;
+    outline:2px solid #003865;
+    outline-offset: 3px;
+} 
+
+.book-form-container form textarea {
+    height: 70px;
+}
+
+.form-buttons-container {
+    grid-area: 8 / 1 / 9 / 3;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.book-form-background .book-form-container form button {
+    width: 100px;
+}
+
+.about-page-background .about-page-container p {
+    margin-top: 20px;
+    font-size: 1rem;
+    text-align: left;
+}
+
+.about-page-background .about-page-container p:last-of-type {
+    text-align: center;
+} 
+
+.about-page-background .about-page-container button,
+.stats-page-background .stats-page-container button {
+    position: absolute;
+    bottom: 20px;
+    right: 30px;
+}
+
+.about-page-background .about-page-container button:hover,
+.stats-page-background .stats-page-container button:hover {
+    bottom: 22px;
+    box-shadow: 0 3px 3px rgba(0, 0, 0, 0.8);
+}
+
+.stats-page-background .stats-page-container h3 {
+    margin: 20px 0 10px;
+}
+
+.stats-page-background .stats-page-container p {
+    color: #003865;
+    font-size: 1.6rem;
+    font-weight: bold;
+    text-align: center;
+}
+
+/* MEDIA QUERIES */
+
+@media screen and (min-width: 780px) {
+
+    header .menu-container {
+        display: none;
+    }
+
+    main {
+        display: grid;
+        grid-template: 1fr / 300px 5fr;
+    }
+
+    main .sidebar {
+        display: grid;
+    }
+
+    .card-deck {
+        padding: 20px;
+    }
+
+    .card .image > div {
+        border-top-left-radius: 5px;
+        border-bottom-left-radius: 5px;
+        height: 100%;
+        opacity: 0;
+        transition: all ease-in .1s;
+    }
+
+    .card .image > div:hover {
+        opacity: 1;
+    }
+
+    .book-form-background .book-form-container,
+    .stats-page-background .stats-page-container,
+    .about-page-background .about-page-container {
+        width: 650px;
+    }
+
+    .book-form-background .book-form-container form {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        grid-template-rows: repeat(6, auto);
+        gap: 20px;
+        margin: 40px 0;
+    }
+
+    .book-form-background .book-form-container form label {
+        justify-self: flex-end;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    header {
+        height: 50px;
+    }
+    
+    header h1 {
+        font-size: 2rem;
+    }
+
+    header .menu-button {
+        width: 40px;
+    }
+
+    header .menu-container {
+        right: 5px
+    }
+
+    header .menu-container .menu-button,
+    header .menu-container .dropdown-container button {
+        font-size: 1rem;
+    }
+
+    header .menu-container .dropdown-container {
+        top: 45px;
+        right: -2px;
+        height: 400px;
+        width: 300px;
+    }
+
+    main {
+        min-height: calc(100vh - 50px);
+        padding-top: 50px;
+    }
+
+    .card-deck {
+        display: flex;
+        height: calc(100vh - 50px);
+        flex-direction: column;
+        flex-shrink: 1;
+    }
+
+    .card-deck .card {
+        max-height: 250px;
+        flex-shrink: 1;
+    }
+
+    .card-deck .card:first-of-type {
+        margin-top: 5px;
+    }
+
+    .book-form-background .book-form-container h1 {
+        display: none;
+    }
+
+    .book-form-background .book-form-container label {
+        margin-top: 5px;
+    }
+
+    .about-page-background .about-page-container p {
+        margin-top: 20px;
+        font-size: 16px;
+        text-align: left;
+    }
+    
+}

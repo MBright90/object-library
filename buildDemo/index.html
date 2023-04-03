@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Library</title>
+
+    <!-- Google-Fonts-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Edu+TAS+Beginner:wght@400;600&family=Lobster&display=swap" rel="stylesheet">
+
+    <!-- JS -->
+
+    <script src="https://kit.fontawesome.com/9c8b111175.js" crossorigin="anonymous"></script>
+    <script type="module" src="./main.js" defer></script>
+
+<script defer src="main.js"></script></head>
+<body>
+    
+    <header>
+        <h1>The Library</h1>
+
+        <div class="menu-container">
+            <button class="menu-button" type="button"><i class="fa-solid fa-bars"></i></button>
+            <div class="dropdown-container" data-menu-visible="false">
+                <button class="add-book-button" type="button">Add New Book</button>
+                <button class="sort-az-button" type="button" data-sorting-order="ascending">Sort by A-Z</button>
+                <button class="sort-year-button" type="button" data-sorting-order="ascending">Sort by Oldest</button>
+                <button class="stats-button" type="button">Stats</button>
+                <button class="reset-button" type="button">Reset Library</button>
+                <button class="about-button" type="button">About</button>
+            </div>  
+        </div>
+    </header>
+
+    <main>
+        <div class="sidebar">
+
+            <div class="sidebar-buttons">
+                <button class="add-book-button" type="button">Add New Book</button>
+                <button class="sort-az-button" type="button" data-sorting-order="ascending">Sort by A-Z</button>
+                <button class="sort-year-button" type="button" data-sorting-order="ascending">Sort by Oldest</button>
+                <button class="stats-button" type="button">Stats</button>
+                <button class="reset-button" type="button">Reset Library</button>
+                <button class="about-button" type="button">About</button>
+            </div>
+
+            <a href="https://github.com/MBright90/object-library" class="footer"><i class="fa-brands fa-github"></i>mbright90</a>
+        </div>
+
+        <div class="card-deck">
+
+            <!-- New cards are added here -->
+
+        </div>
+
+        <div class="book-form-background">
+            <div class="book-form-container">
+
+                <h1>Add Book</h1>
+                <form action="#" method="get">
+
+                    <label for="book-title">Title</label>
+                    <input type="text" name="book-title" id="book-title" placeholder="*Required" minlength="1">
+
+                    <button type="button">Autofill</button>
+
+                    <label for="book-author">Author</label>
+                    <input type="text" name="book-author" id="book-author" placeholder="*Required" minlength="3">
+
+                    <label for="book-year">Year</label>
+                    <input type="number" name="book-year" id="book-year" length="4" min="1600" max="2022">
+
+                    <label for="book-pages">Pages</label>
+                    <input type="number" name="book-pages" id="book-pages" min="1" max="10000">
+
+                    <label for="book-description">Description</label>
+                    <textarea name="book-description" 
+                              id="book-description" 
+                              cols="30" rows="3" 
+                              placeholder="*Required                               A one sentence description of the book" 
+                              minlength="10" maxlength="100"></textarea>
+
+                    <label for="book-cover-url">Book Cover URL</label>
+                    <input type="url" name="book-cover-url" id="book-cover-url" placeholder="*Required">
+
+                    <div class="form-buttons-container">
+                        <button type="button">Add Book</button>
+                        <button type="reset">Cancel</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+
+        <div class="about-page-background">
+            <div class="about-page-container">
+                <h1>About This Library</h1>
+                <p>
+                    This library has been created using purely front-end technology. It uses local storage data on your browser to
+                    ensure a persistent library across sessions. 
+                </p>
+                <p>
+                    This data is not sent to any third parties or even myself, it is purely
+                    to enhance your experience and make sure your time is not wasted.
+                    When using the autofill function on the book form, a call is made to Google Books API which returns the first match it 
+                    finds when searching by relevance.
+                </p>
+
+                <p>
+                    When sorting by newest and oldest, you may notice that books are not always where you would expect them to be. This is because
+                    if you have used the autofill feature, the date used to sort through the books is the year the edition was published, as opposed
+                    to the year the book was first published.
+                </p>
+
+                <p>
+                    <a href="https://github.com/MBright90/object-library" class="footer"><i class="fa-brands fa-github"></i>mbright90</a>
+                </p>
+
+                <button class="close-about-button" type="button">Close</button>
+
+            </div>
+        </div>
+
+        <div class="stats-page-background">
+            <div class="stats-page-container">
+                <h1>Library Stats</h1>
+                <h3>Total Books</h3>
+                <p class="total-books"></p>
+                <h3>Books Read</h3>
+                <p class="books-read"></p>
+                <h3>Total Pages</h3>
+                <p class="total-pages"></p>
+                <h3>Pages Read</h3>
+                <p class="pages-read"></p>
+
+                <button class="close-stats-button" type="button">Close</button>
+            </div>
+        </div>
+
+    </main>
+
+</body>
+</html>
