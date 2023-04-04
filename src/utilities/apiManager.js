@@ -2,14 +2,15 @@
 /* eslint-disable class-methods-use-this */
 // import { getAuth } from "firebase/compat/auth"
 
+import { getAuth } from "firebase/auth"
+
 import {
   getFirestore,
   collection,
   addDoc,
+  doc,
+  getDocs,
   query,
-  orderBy,
-  onSnapshot,
-  deleteDoc,
   // setDoc,
   // updateDoc,
   // doc,
@@ -29,82 +30,76 @@ export default class APIManager {
     window.localStorage.setItem("userLibrary", currentLibrary) // Saving library state in local storage
   }
 
-  // addBookToLibrary(title, author, year, description, imageURL, pageCount) {
-  //   this.bookShelf.push(
-  //     new Book(
-  //       title,
-  //       author,
-  //       year || null,
-  //       description,
-  //       imageURL,
-  //       pageCount,
-  //       this.bookShelf.length + 1
-  //     )
-  //   )
-  //   this.saveCurrentLibrary()
-  //   return true
-  // }
-
   generateBookID(title) {
     return title.toLowerCase().replaceAll(" ", "_")
   }
 
   addBookToLibrary(title, author, year, description, imageURL, pageCount) {
-    let result
+    const { currentUser } = getAuth()
+
+    // Return false if not logged in
+    if (!currentUser) return false
+
     try {
-      addDoc(collection(getFirestore(), "books"), {
+      const usersBookshelf = collection(
+        doc(getFirestore(), "users", currentUser.uid),
+        "books"
+      )
+      addDoc(usersBookshelf, {
         title,
         author,
         year,
         description,
         imageURL,
         pageCount,
-        id: this.generateBookID(title),
+        bookID: this.generateBookID(title),
         hasRead: false,
       })
-      result = true
+      return true
     } catch (error) {
       console.log("Failed to add book to library", error)
     }
-    return result
+    return false
   }
 
-  // function loadMessages() {
-  //   const recentMessagesQuery = query(collection(getFirestore(), 'messages'), orderBy('timestamp', 'desc'), limit(12))
+  async getUsersBooks() {
+    const { currentUser } = getAuth()
+    // Return false if not logged in
+    if (!currentUser) return []
 
-  //   onSnapshot(recentMessagesQuery, function(snapshot) {
-  //     snapshot.docChanges().forEach(function(change) {
-  //       if (change.type === 'removed') {
-  //         deleteMessage(change.doc.id)
-  //       } else {
-  //         const message = change.doc.data()
-  //         displayMessage(change.doc.id, message.timestamp, message.name,
-  //           message.text, message.profilePic, message.imageUrl)
+    try {
+      const userBookRef = doc(getFirestore(), "users", currentUser.uid)
+      const usersBookshelf = collection(userBookRef, "books")
+
+      const querySnapshot = await getDocs(query(usersBookshelf))
+      const books = querySnapshot.docs.map((bookDoc) => bookDoc.data())
+      return books
+    } catch (error) {
+      console.log("Users bookshelf could not be retrieved:", error)
+      return []
+    }
+  }
+
+  // async deleteBook(bookID) {
+  //   await deleteDoc()
+  // }
+
+  // loadBooks() {
+  //   const bookshelfQuery = query(
+  //     collection(getFirestore(), "books"),
+  //     orderBy("title", "year")
+  //   )
+
+  //   onSnapshot(bookshelfQuery, (snapshot) => {
+  //     snapshot.docChanges().forEach((change) => {
+  //       if (change.type === "removed") this.deleteBook(change.doc.id)
+  //       else {
+  //         const book = change.doc.data()
+  //         console.log(book)
   //       }
   //     })
   //   })
   // }
-
-  async deleteBook(bookID) {
-    
-  }
-
-  loadBooks() {
-    const bookshelfQuery = query(
-      collection(getFirestore(), "books"),
-      orderBy("title", "year")
-    )
-
-    onSnapshot(bookshelfQuery, (snapshot) => {
-      snapshot.docChanges().forEach((change) => {
-        if (change.type === "removed") this.deleteBook(change.doc.id)
-        else {
-          const book = change.doc.data()
-          console.log(book)
-        }
-      })
-    })
-  }
 
   createNewCard(newBook) {
     const cardDeck = document.querySelector(".card-deck")
@@ -212,6 +207,8 @@ export default class APIManager {
       })
     return book
   }
+
+  // Update functions to retrieve stats from database and use reduce to work out
 
   countBooksRead() {
     let readBookCount = 0
