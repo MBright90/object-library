@@ -1,6 +1,8 @@
+/* eslint-disable no-console */
 /* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-use-before-define */
+import { initializeApp } from "firebase/app"
 import {
   getAuth,
   onAuthStateChanged,
@@ -8,7 +10,6 @@ import {
   signInWithPopup,
   signOut,
 } from "firebase/auth"
-import { initializeApp } from "firebase/app"
 import firebaseConfig from "./firebase-config"
 import APIManager from "./utilities/apiManager"
 import sortingObject from "./utilities/sortingObject"
@@ -24,67 +25,8 @@ const librarian = new APIManager(
   "AIzaSyCChOno95k5f75fCh9zynvxwo4qTf-5D4Q"
 )
 
-// ---------- Retrieving local storage // Creating initial example book objects ---------- //
-
-if (window.localStorage.getItem("userLibrary")) {
-  const libraryString = window.localStorage.getItem("userLibrary")
-  librarian.bookShelf = JSON.parse(libraryString)
-} else {
-  librarian.returnTitle("the Da Vinci Code").then((response) => {
-    librarian.addBookToLibrary(
-      response.title,
-      response.author,
-      response.year,
-      response.description,
-      response.imageURL,
-      response.pageCount
-    )
-  })
-
-  librarian.returnTitle("The Great Gatsby").then((response) => {
-    librarian.addBookToLibrary(
-      response.title,
-      response.author,
-      response.year,
-      response.description,
-      response.imageURL,
-      response.pageCount
-    )
-  })
-
-  librarian.returnTitle("The Fellowship of the Ring").then((response) => {
-    librarian.addBookToLibrary(
-      response.title,
-      response.author,
-      response.year,
-      response.description,
-      response.imageURL,
-      response.pageCount
-    )
-  })
-
-  librarian.returnTitle("The Goblet of Fire").then((response) => {
-    librarian.addBookToLibrary(
-      response.title,
-      response.author,
-      response.year,
-      response.description,
-      response.imageURL,
-      response.pageCount
-    )
-  })
-
-  librarian.returnTitle("Bridget Jones").then((response) => {
-    librarian.addBookToLibrary(
-      response.title,
-      response.author,
-      response.year,
-      response.description,
-      response.imageURL,
-      response.pageCount
-    )
-  })
-}
+initializeApp(firebaseConfig)
+initFirebaseAuth()
 
 // ---------- Form completion and data retrieval ---------- //
 
@@ -96,6 +38,7 @@ const imageInput = document.querySelector("#book-cover-url")
 const pagesInput = document.querySelector("#book-pages")
 
 function parseFormData() {
+  console.log("Parsing form data")
   if (
     librarian.addBookToLibrary(
       titleInput.value,
@@ -106,16 +49,16 @@ function parseFormData() {
       parseInt(pagesInput.value, 10)
     )
   ) {
-    librarian.createNewCard(librarian.bookShelf[librarian.bookShelf.length - 1])
+    showAllBooks()
     cancelBookForm()
   } else {
-    alert("Please complete all required form fields")
+    alert(
+      "Book could not be added, please check you are signed in and have completed all required fields"
+    )
   }
 }
 
-const submitFormButton = document.querySelector(
-  ".form-buttons-container>button[type=button]"
-)
+const submitFormButton = document.querySelector("#add-book-button")
 submitFormButton.addEventListener("click", parseFormData)
 
 const autofillBtn = document.querySelector("form>button")
@@ -295,7 +238,7 @@ closeStatsButton.addEventListener("click", () => {
 
 function removeAllCards() {
   const cardDeck = document.querySelectorAll(".card")
-  cardDeck.forEach((card) => {
+  cardDeck?.forEach((card) => {
     card.remove()
   })
 }
@@ -319,9 +262,25 @@ resetLibraryButtons.forEach((button) => {
 
 // -------------- Library invocation ------------ //
 
-librarian.bookShelf.forEach((book) => {
-  librarian.createNewCard(book)
-})
+function showAllBooks() {
+  console.log("showing all books")
+  removeAllCards()
+  librarian.getUsersBooks().then((result) =>
+    result?.forEach((book) => {
+      librarian.createNewCard(book)
+    })
+  )
+}
+
+function initLibrary() {
+  onAuthStateChanged(getAuth(), showAllBooks)
+}
+
+initLibrary()
+
+// ?.forEach((book) => {
+//   librarian.createNewCard(book)
+// })
 
 // --------- Firebase Auth Integration --------- //
 
@@ -387,8 +346,4 @@ signOutButton.addEventListener("click", signOutUser)
 // 2: Implement adding a book to their collection
 
 // 3: Implement loading books from their collection and listening for changes
-
-initializeApp(firebaseConfig)
-initFirebaseAuth()
-
 // TODO: LoadStorage()
