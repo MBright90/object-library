@@ -1,4 +1,21 @@
-import Book from "./book"
+/* eslint-disable no-console */
+/* eslint-disable class-methods-use-this */
+// import { getAuth } from "firebase/compat/auth"
+
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  query,
+  orderBy,
+  onSnapshot,
+  deleteDoc,
+  // setDoc,
+  // updateDoc,
+  // doc,
+  // serverTimestamp,
+} from "firebase/firestore"
+// import Book from "./book"
 
 export default class APIManager {
   constructor(endpoint, key) {
@@ -12,20 +29,81 @@ export default class APIManager {
     window.localStorage.setItem("userLibrary", currentLibrary) // Saving library state in local storage
   }
 
+  // addBookToLibrary(title, author, year, description, imageURL, pageCount) {
+  //   this.bookShelf.push(
+  //     new Book(
+  //       title,
+  //       author,
+  //       year || null,
+  //       description,
+  //       imageURL,
+  //       pageCount,
+  //       this.bookShelf.length + 1
+  //     )
+  //   )
+  //   this.saveCurrentLibrary()
+  //   return true
+  // }
+
+  generateBookID(title) {
+    return title.toLowerCase().replaceAll(" ", "_")
+  }
+
   addBookToLibrary(title, author, year, description, imageURL, pageCount) {
-    this.bookShelf.push(
-      new Book(
+    let result
+    try {
+      addDoc(collection(getFirestore(), "books"), {
         title,
         author,
-        year || null,
+        year,
         description,
         imageURL,
         pageCount,
-        this.bookShelf.length + 1
-      )
+        id: this.generateBookID(title),
+        hasRead: false,
+      })
+      result = true
+    } catch (error) {
+      console.log("Failed to add book to library", error)
+    }
+    return result
+  }
+
+  // function loadMessages() {
+  //   const recentMessagesQuery = query(collection(getFirestore(), 'messages'), orderBy('timestamp', 'desc'), limit(12))
+
+  //   onSnapshot(recentMessagesQuery, function(snapshot) {
+  //     snapshot.docChanges().forEach(function(change) {
+  //       if (change.type === 'removed') {
+  //         deleteMessage(change.doc.id)
+  //       } else {
+  //         const message = change.doc.data()
+  //         displayMessage(change.doc.id, message.timestamp, message.name,
+  //           message.text, message.profilePic, message.imageUrl)
+  //       }
+  //     })
+  //   })
+  // }
+
+  async deleteBook(bookID) {
+    
+  }
+
+  loadBooks() {
+    const bookshelfQuery = query(
+      collection(getFirestore(), "books"),
+      orderBy("title", "year")
     )
-    this.saveCurrentLibrary()
-    return true
+
+    onSnapshot(bookshelfQuery, (snapshot) => {
+      snapshot.docChanges().forEach((change) => {
+        if (change.type === "removed") this.deleteBook(change.doc.id)
+        else {
+          const book = change.doc.data()
+          console.log(book)
+        }
+      })
+    })
   }
 
   createNewCard(newBook) {
@@ -98,18 +176,20 @@ export default class APIManager {
       })
     })
 
-    deleteButton.addEventListener("click", (e) => {
-      if (window.confirm("Delete card?")) {
-        this.bookShelf.forEach((book) => {
-          if (book.bookID === e.composedPath()[3].dataset.bookId) {
-            const bookIndex = this.bookShelf.indexOf(book)
-            this.bookShelf.splice(bookIndex, 1)
-          }
-        })
-        e.composedPath()[3].remove()
-        this.saveCurrentLibrary()
-      }
-    })
+    deleteButton.addEventListener("click", this.deleteCard)
+  }
+
+  deleteCard(e) {
+    if (window.confirm("Delete card?")) {
+      this.bookShelf.forEach((book) => {
+        if (book.bookID === e.composedPath()[3].dataset.bookId) {
+          const bookIndex = this.bookShelf.indexOf(book)
+          this.bookShelf.splice(bookIndex, 1)
+        }
+      })
+      e.composedPath()[3].remove()
+      this.saveCurrentLibrary()
+    }
   }
 
   returnTitle(title) {
@@ -157,41 +237,3 @@ export default class APIManager {
     return readPageCount
   }
 }
-
-// // experimenting with object initiation in place of class.
-// const sortingProto = {
-//   compareBooksYear(a, b) {
-//     if (
-//       document.querySelector(".sort-year-button").dataset.sortingOrder ===
-//       "ascending"
-//     ) {
-//       return a.year < b.year ? 1 : -1
-//     }
-//     return a.year < b.year ? -1 : 1
-//   },
-
-//   compareBooksAZ(a, b) {
-//     function checkTitle(title) {
-//       const thePattern = /^(\bthe\b)/i // Removes 'the' from beginning of book titles, case insensitive
-
-//       if (title.match(thePattern)) {
-//         title = title.substring(title.indexOf(" ") + 1)
-//       }
-
-//       return title
-//     }
-
-//     const titleA = checkTitle(a.title.toLowerCase())
-//     const titleB = checkTitle(b.title.toLowerCase())
-
-//     if (
-//       document.querySelector(".sort-az-button").dataset.sortingOrder ===
-//       "ascending"
-//     ) {
-//       return titleA < titleB ? 1 : -1
-//     }
-//     return titleA < titleB ? -1 : 1
-//   },
-// }
-
-// export const sortingObject = () => Object.assign(Object.create(sortingProto))
