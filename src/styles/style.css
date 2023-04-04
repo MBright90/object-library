@@ -94,9 +94,13 @@ header .account i {
 }
 
 .account .user-info .sign-out-button {
-    background: none;
+    background: #FFFFFF;
     border: none;
+    border-radius: 3px;
+    color: #003865;
     cursor: pointer;
+    font-weight: bold;
+    padding: 2px 5px;
 }
 
 header .menu-container {
