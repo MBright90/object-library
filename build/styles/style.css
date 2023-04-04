@@ -59,7 +59,10 @@ header .account {
 }
 
 header .account .sign-in {
+    background-color: inherit;
+    border: none;
     cursor: pointer;
+    font-size: 16px;
 }
 
 header .account i {
@@ -76,11 +79,12 @@ header .account i {
     display: grid;
     grid-column-gap: 10px;
     grid-template-areas: "pic name    "
-               "pic sign-out";
+                         "pic sign-out";
 } 
 
 .account .user-info .user-pic {
-    background-color: red;
+    background-position: center;
+    background-size: contain;
     border-radius: 50%;
     grid-area: pic;
     height: 40px;
@@ -89,6 +93,7 @@ header .account i {
 
 .account .user-info .user-name {
     grid-area: name;
+    font-weight: bold;
 }
 
 .account .user-info .sign-out-button {
