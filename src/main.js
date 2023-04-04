@@ -1,7 +1,19 @@
+/* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-use-before-define */
+import {
+  getAuth,
+  onAuthStateChanged,
+  GoogleAuthProvider,
+  signInWithPopup,
+  signOut,
+} from "firebase/auth"
+import { initializeApp } from "firebase/app"
+import firebaseConfig from "./firebase-config"
 import APIManager from "./utilities/apiManager"
 import sortingObject from "./utilities/sortingObject"
+
+import placeholderImage from "./assets/images/placeholder-profile.jpg"
 
 import "./styles/style.css"
 
@@ -314,3 +326,73 @@ resetLibraryButtons.forEach((button) => {
 librarian.bookShelf.forEach((book) => {
   librarian.createNewCard(book)
 })
+
+// -------------- Firebase integration ---------- //
+
+// TODOs:
+
+async function signIn() {
+  const provider = new GoogleAuthProvider()
+  await signInWithPopup(getAuth(), provider)
+}
+
+function signOutUser() {
+  signOut(getAuth())
+}
+
+function getUserName() {
+  return getAuth().currentUser.displayName
+}
+
+function getUserPicture() {
+  return getAuth().currentUser.photoURL || placeholderImage
+}
+
+function isUserSignedIn() {
+  return !!getAuth().currentUser
+}
+
+function initFirebaseAuth() {
+  onAuthStateChanged(getAuth(), displayAccountStatus)
+}
+
+// Check if user is signed in, if not: show sign-in
+function displayAccountStatus() {
+  const signInDiv = document.querySelector(".sign-in")
+  const userInfoDiv = document.querySelector(".user-info")
+  const userInfoDivChildren = [...userInfoDiv.children]
+  if (isUserSignedIn()) {
+    // If user is signed in, display the account info div
+    signInDiv.setAttribute("hidden", "true")
+    userInfoDiv.removeAttribute("hidden")
+    userInfoDivChildren?.forEach((child) => child.removeAttribute("hidden"))
+
+    // Display users picture and display name
+    const userProfilePic = document.querySelector(".user-pic")
+    userProfilePic.style.backgroundImage = `url('${getUserPicture()}')`
+    const userName = document.querySelector(".user-name")
+    userName.textContent = getUserName()
+  } else {
+    // If user is not signed in, display sign in prompt
+    userInfoDiv.setAttribute("hidden", "true")
+    userInfoDivChildren?.forEach((child) =>
+      child.setAttribute("hidden", "true")
+    )
+    signInDiv.removeAttribute("hidden")
+  }
+}
+
+const signInButton = document.querySelector(".sign-in")
+signInButton.addEventListener("click", signIn)
+
+const signOutButton = document.querySelector(".sign-out-button")
+signOutButton.addEventListener("click", signOutUser)
+
+// 2: Implement adding a book to their collection
+
+// 3: Implement loading books from their collection and listening for changes
+
+initializeApp(firebaseConfig)
+initFirebaseAuth()
+
+// TODO: LoadStorage()
