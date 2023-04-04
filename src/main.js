@@ -83,10 +83,6 @@ if (window.localStorage.getItem("userLibrary")) {
       response.imageURL,
       response.pageCount
     )
-
-    librarian.bookShelf.forEach((book) => {
-      librarian.createNewCard(book)
-    })
   })
 }
 
@@ -327,7 +323,7 @@ librarian.bookShelf.forEach((book) => {
   librarian.createNewCard(book)
 })
 
-// -------------- Firebase integration ---------- //
+// --------- Firebase Auth Integration --------- //
 
 // TODOs:
 
