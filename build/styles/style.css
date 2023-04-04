@@ -55,7 +55,7 @@ header h1 {
 header .account {
     color: #FFFFFF;
     position: absolute;
-    left: 10px;
+    left: 5px;
 }
 
 header .account .sign-in {
