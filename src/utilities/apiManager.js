@@ -8,6 +8,7 @@ import {
   getFirestore,
   collection,
   addDoc,
+  deleteDoc,
   doc,
   getDocs,
   query,
@@ -16,18 +17,12 @@ import {
   // doc,
   // serverTimestamp,
 } from "firebase/firestore"
-// import Book from "./book"
 
 export default class APIManager {
   constructor(endpoint, key) {
     this.endpoint = endpoint
     this.key = key
     this.bookShelf = []
-  }
-
-  saveCurrentLibrary() {
-    const currentLibrary = JSON.stringify(this.bookShelf)
-    window.localStorage.setItem("userLibrary", currentLibrary) // Saving library state in local storage
   }
 
   generateBookID(title) {
@@ -72,7 +67,10 @@ export default class APIManager {
       const usersBookshelf = collection(userBookRef, "books")
 
       const querySnapshot = await getDocs(query(usersBookshelf))
-      const books = querySnapshot.docs.map((bookDoc) => bookDoc.data())
+      const books = querySnapshot.docs.map((bookDoc) => ({
+        ...bookDoc.data(),
+        userRef: bookDoc.id,
+      }))
       return books
     } catch (error) {
       console.log("Users bookshelf could not be retrieved:", error)
@@ -80,33 +78,13 @@ export default class APIManager {
     }
   }
 
-  // async deleteBook(bookID) {
-  //   await deleteDoc()
-  // }
-
-  // loadBooks() {
-  //   const bookshelfQuery = query(
-  //     collection(getFirestore(), "books"),
-  //     orderBy("title", "year")
-  //   )
-
-  //   onSnapshot(bookshelfQuery, (snapshot) => {
-  //     snapshot.docChanges().forEach((change) => {
-  //       if (change.type === "removed") this.deleteBook(change.doc.id)
-  //       else {
-  //         const book = change.doc.data()
-  //         console.log(book)
-  //       }
-  //     })
-  //   })
-  // }
-
   createNewCard(newBook) {
+    console.log(newBook)
     const cardDeck = document.querySelector(".card-deck")
 
     const cardTemplate = document.createElement("div")
     cardTemplate.classList.add("card")
-    cardTemplate.dataset.bookId = newBook.bookID
+    cardTemplate.dataset.bookId = newBook.userRef
 
     const cardImage = document.createElement("div")
     cardImage.classList.add("image")
@@ -171,22 +149,33 @@ export default class APIManager {
       })
     })
 
-    deleteButton.addEventListener("click", this.deleteCard)
+    deleteButton.addEventListener("click", this.deleteBook)
   }
 
-  deleteCard(e) {
-    if (window.confirm("Delete card?")) {
-      this.bookShelf.forEach((book) => {
-        if (book.bookID === e.composedPath()[3].dataset.bookId) {
-          const bookIndex = this.bookShelf.indexOf(book)
-          this.bookShelf.splice(bookIndex, 1)
-        }
-      })
-      e.composedPath()[3].remove()
-      this.saveCurrentLibrary()
+  async deleteBook(e) {
+    const card = e.composedPath()[3]
+    const { bookId } = card.dataset
+
+    if (window.confirm("Delete Book?")) {
+      try {
+        const { currentUser } = getAuth()
+        const docRef = doc(
+          getFirestore(),
+          "users",
+          currentUser.uid,
+          "books",
+          bookId
+        )
+
+        await deleteDoc(docRef)
+        card.remove()
+      } catch (error) {
+        console.log("Book could not be deleted", error)
+      }
     }
   }
 
+  // Autofill the title using google books API
   returnTitle(title) {
     const book = fetch(
       `${this.endpoint}${title}&inTitle&orderBy=relevance&key=${this.key}`
@@ -208,6 +197,7 @@ export default class APIManager {
     return book
   }
 
+  // TODO!
   // Update functions to retrieve stats from database and use reduce to work out
 
   countBooksRead() {
