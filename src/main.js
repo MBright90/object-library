@@ -38,7 +38,6 @@ const imageInput = document.querySelector("#book-cover-url")
 const pagesInput = document.querySelector("#book-pages")
 
 function parseFormData() {
-  console.log("Parsing form data")
   if (
     librarian.addBookToLibrary(
       titleInput.value,
@@ -263,7 +262,6 @@ resetLibraryButtons.forEach((button) => {
 // -------------- Library invocation ------------ //
 
 function showAllBooks() {
-  console.log("showing all books")
   removeAllCards()
   librarian.getUsersBooks().then((result) =>
     result?.forEach((book) => {
