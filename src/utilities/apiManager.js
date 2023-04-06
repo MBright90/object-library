@@ -9,13 +9,10 @@ import {
   collection,
   addDoc,
   deleteDoc,
+  updateDoc,
   doc,
   getDocs,
   query,
-  // setDoc,
-  // updateDoc,
-  // doc,
-  // serverTimestamp,
 } from "firebase/firestore"
 
 export default class APIManager {
@@ -85,6 +82,7 @@ export default class APIManager {
     const cardTemplate = document.createElement("div")
     cardTemplate.classList.add("card")
     cardTemplate.dataset.bookId = newBook.userRef
+    cardTemplate.dataset.readStatus = newBook.hasRead
 
     const cardImage = document.createElement("div")
     cardImage.classList.add("image")
@@ -132,24 +130,44 @@ export default class APIManager {
 
     cardDeck.appendChild(cardTemplate)
 
-    readButton.addEventListener("click", (e) => {
-      const bookID = parseInt(e.composedPath()[3].dataset.bookId, 10)
-      this.bookShelf.forEach((book) => {
-        if (book.bookID === bookID) {
-          if (!book.hasRead) {
-            e.composedPath()[1].style =
-              "background-color: #3CCF4E; color: #FFFFFF"
-            book.hasRead = true
-          } else {
-            e.composedPath()[1].style = "background-color: ; color: inherit;"
-            book.hasRead = false
-          }
-        }
-        this.saveCurrentLibrary()
-      })
-    })
-
+    readButton.addEventListener("click", this.updateReadStatus)
     deleteButton.addEventListener("click", this.deleteBook)
+  }
+
+  async updateReadStatus(e) {
+    const card = e.composedPath()[3]
+    const { bookId, readStatus } = card.dataset
+
+    try {
+      const { currentUser } = getAuth()
+      const docRef = doc(
+        getFirestore(),
+        "users",
+        currentUser.uid,
+        "books",
+        bookId
+      )
+
+      if (readStatus === "false") {
+        // When setting book to has been read, update database doc and
+        // update color of check mark
+        updateDoc(docRef, {
+          hasRead: true,
+        })
+        card.dataset.readStatus = true
+        e.composedPath()[1].style = "background-color: #3CCF4E; color: #FFFFFF"
+      } else {
+        // When setting book to has not been read, update database doc and
+        // update color of check mark
+        updateDoc(docRef, {
+          hasRead: false,
+        })
+        card.dataset.readStatus = false
+        e.composedPath()[1].style = "background-color: ; color: inherit;"
+      }
+    } catch (error) {
+      console.log("Could not update read status", error)
+    }
   }
 
   async deleteBook(e) {
