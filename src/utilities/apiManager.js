@@ -13,6 +13,7 @@ import {
   doc,
   getDocs,
   query,
+  where,
 } from "firebase/firestore"
 
 export default class APIManager {
@@ -31,22 +32,29 @@ export default class APIManager {
 
     // Return false if not logged in
     if (!currentUser) return false
+    const bookID = this.generateBookID(title)
 
     try {
-      const usersBookshelf = collection(
+      const usersBookShelf = collection(
         doc(getFirestore(), "users", currentUser.uid),
         "books"
       )
-      addDoc(usersBookshelf, {
+      // Add the book to the users database
+      addDoc(usersBookShelf, {
         title,
         author,
         year,
         description,
         imageURL,
         pageCount,
-        bookID: this.generateBookID(title),
+        bookID,
         hasRead: false,
       })
+      // Retrieve the book with the correct ID and add it to the bookshelf
+      // and book cards list
+      const book = this.getSingleBook(bookID)
+      this.createNewCard(book)
+
       return true
     } catch (error) {
       console.log("Failed to add book to library", error)
@@ -75,8 +83,29 @@ export default class APIManager {
     }
   }
 
+  // THIS FUNCTION DOES NOT WORK YET!
+  async getSingleBook(bookID) {
+    const { currentUser } = getAuth()
+    // Return false if not logged in
+    if (!currentUser) throw new Error("User is not logged in")
+
+    let book
+    try {
+      const userBookRef = doc(getFirestore(), "users", currentUser.uid)
+      const usersBookShelf = collection(userBookRef, "books")
+
+      const querySnapshot = await getDocs(
+        query(usersBookShelf, where("bookID", "==", bookID))
+      )
+      console.log(book)
+      book = querySnapshot[0].data()
+    } catch (error) {
+      console.log("Could not retrieve book: ", error)
+    }
+    return book
+  }
+
   createNewCard(newBook) {
-    console.log(newBook)
     const cardDeck = document.querySelector(".card-deck")
 
     const cardTemplate = document.createElement("div")
@@ -251,49 +280,5 @@ export default class APIManager {
       stats = { bookCount: 0, booksRead: 0, totalPages: 0, pagesRead: 0 }
     }
     return stats
-  }
-  // async getUsersBooks() {
-  //   const { currentUser } = getAuth()
-  //   // Return false if not logged in
-  //   if (!currentUser) return []
-
-  //   try {
-  //     const userBookRef = doc(getFirestore(), "users", currentUser.uid)
-  //     const usersBookshelf = collection(userBookRef, "books")
-
-  //     const querySnapshot = await getDocs(query(usersBookshelf))
-  //     const books = querySnapshot.docs.map((bookDoc) => ({
-  //       ...bookDoc.data(),
-  //       userRef: bookDoc.id,
-  //     }))
-  //     return books
-  //   } catch (error) {
-  //     console.log("Users bookshelf could not be retrieved:", error)
-  //     return []
-  //   }
-  // }
-
-  countBooksRead() {
-    let readBookCount = 0
-    this.bookShelf.forEach((book) => {
-      if (book.hasRead) readBookCount += 1
-    })
-    return readBookCount
-  }
-
-  countTotalPages() {
-    let totalPageCount = 0
-    this.bookShelf.forEach((book) => {
-      totalPageCount += book.pageCount
-    })
-    return totalPageCount
-  }
-
-  countPagesRead() {
-    let readPageCount = 0
-    this.bookShelf.forEach((book) => {
-      if (book.hasRead) readPageCount += book.pageCount
-    })
-    return readPageCount
   }
 }
