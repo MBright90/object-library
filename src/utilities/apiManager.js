@@ -61,9 +61,9 @@ export default class APIManager {
 
     try {
       const userBookRef = doc(getFirestore(), "users", currentUser.uid)
-      const usersBookshelf = collection(userBookRef, "books")
+      const usersBookShelf = collection(userBookRef, "books")
 
-      const querySnapshot = await getDocs(query(usersBookshelf))
+      const querySnapshot = await getDocs(query(usersBookShelf))
       const books = querySnapshot.docs.map((bookDoc) => ({
         ...bookDoc.data(),
         userRef: bookDoc.id,
@@ -217,6 +217,61 @@ export default class APIManager {
 
   // TODO!
   // Update functions to retrieve stats from database and use reduce to work out
+
+  async getCurrentStats() {
+    const { currentUser } = getAuth()
+    let stats
+
+    try {
+      const userBookRef = doc(getFirestore(), "users", currentUser.uid)
+      const usersBookShelf = collection(userBookRef, "books")
+
+      const querySnapshot = await getDocs(query(usersBookShelf))
+
+      // Working out stats from query
+      const allBooks = querySnapshot.docs.map((bookDoc) => ({
+        ...bookDoc.data(),
+      }))
+
+      const onlyBooksRead = allBooks?.filter((book) => book.hasRead === true)
+
+      const bookCount = allBooks.length
+      const booksRead = onlyBooksRead.length
+      const totalPages = allBooks?.reduce(
+        (total, book) => total + book.pageCount,
+        0
+      )
+      const pagesRead = onlyBooksRead?.reduce(
+        (total, book) => total + book.pageCount,
+        0
+      )
+      stats = { bookCount, booksRead, totalPages, pagesRead }
+    } catch (error) {
+      console.log("Users stats could not be retrieved: ", error)
+      stats = { bookCount: 0, booksRead: 0, totalPages: 0, pagesRead: 0 }
+    }
+    return stats
+  }
+  // async getUsersBooks() {
+  //   const { currentUser } = getAuth()
+  //   // Return false if not logged in
+  //   if (!currentUser) return []
+
+  //   try {
+  //     const userBookRef = doc(getFirestore(), "users", currentUser.uid)
+  //     const usersBookshelf = collection(userBookRef, "books")
+
+  //     const querySnapshot = await getDocs(query(usersBookshelf))
+  //     const books = querySnapshot.docs.map((bookDoc) => ({
+  //       ...bookDoc.data(),
+  //       userRef: bookDoc.id,
+  //     }))
+  //     return books
+  //   } catch (error) {
+  //     console.log("Users bookshelf could not be retrieved:", error)
+  //     return []
+  //   }
+  // }
 
   countBooksRead() {
     let readBookCount = 0
