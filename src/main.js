@@ -18,15 +18,15 @@ import placeholderImage from "./assets/images/placeholder-profile.jpg"
 
 import "./styles/style.css"
 
+initializeApp(firebaseConfig)
+initFirebaseAuth()
+
 const bookApiEndpoint = "https://www.googleapis.com/books/v1/volumes?q="
 
 const librarian = new APIManager(
   bookApiEndpoint,
   "AIzaSyCChOno95k5f75fCh9zynvxwo4qTf-5D4Q"
 )
-
-initializeApp(firebaseConfig)
-initFirebaseAuth()
 
 // ---------- Form completion and data retrieval ---------- //
 
@@ -262,13 +262,16 @@ resetLibraryButtons.forEach((button) => {
 
 // -------------- Library invocation ------------ //
 
-function showAllBooks() {
+async function updateBookShelf() {
+  await librarian.getUsersBooks().then((result) => {
+    librarian.bookShelf = result
+  })
+}
+
+async function showAllBooks() {
+  await updateBookShelf()
   removeAllCards()
-  librarian.getUsersBooks().then((result) =>
-    result?.forEach((book) => {
-      librarian.createNewCard(book)
-    })
-  )
+  librarian.bookShelf.forEach((book) => librarian.createNewCard(book))
 }
 
 function initLibrary() {
@@ -276,10 +279,6 @@ function initLibrary() {
 }
 
 initLibrary()
-
-// ?.forEach((book) => {
-//   librarian.createNewCard(book)
-// })
 
 // --------- Firebase Auth Integration --------- //
 
