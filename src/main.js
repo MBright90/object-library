@@ -205,11 +205,12 @@ const booksReadPara = document.querySelector(".books-read")
 const totalPagesPara = document.querySelector(".total-pages")
 const pagesReadPara = document.querySelector(".pages-read")
 
-function updateStats() {
-  totalBooksPara.textContent = librarian.bookShelf.length
-  booksReadPara.textContent = librarian.countBooksRead()
-  totalPagesPara.textContent = librarian.countTotalPages()
-  pagesReadPara.textContent = librarian.countPagesRead()
+async function updateStats() {
+  const stats = await librarian.getCurrentStats()
+  totalBooksPara.textContent = stats.bookCount
+  booksReadPara.textContent = stats.booksRead
+  totalPagesPara.textContent = stats.totalPages
+  pagesReadPara.textContent = stats.pagesRead
 }
 
 const statsPage = document.querySelector(".stats-page-background")
