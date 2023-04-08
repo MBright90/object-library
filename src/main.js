@@ -48,7 +48,6 @@ function parseFormData() {
       parseInt(pagesInput.value, 10)
     )
   ) {
-    showAllBooks()
     cancelBookForm()
   } else {
     alert(
@@ -179,7 +178,7 @@ sortYearButtons.forEach((button) => {
   button.addEventListener("click", () => {
     removeDropMenu()
     removeAllCards()
-    librarian.bookShelf.sort(sortingHat.compareBooksYear).forEach((book) => {
+    librarian.bookShelf?.sort(sortingHat.compareBooksYear).forEach((book) => {
       librarian.createNewCard(book)
     })
     toggleSortingOrder(sortYearButtons)
@@ -191,7 +190,7 @@ sortAZButtons.forEach((button) => {
   button.addEventListener("click", () => {
     removeDropMenu()
     removeAllCards()
-    librarian.bookShelf.sort(sortingHat.compareBooksAZ).forEach((book) => {
+    librarian.bookShelf?.sort(sortingHat.compareBooksAZ).forEach((book) => {
       librarian.createNewCard(book)
     })
     toggleSortingOrder(sortAZButtons)
@@ -223,8 +222,8 @@ function showStatsPage() {
 
 const statsButtons = document.querySelectorAll(".stats-button")
 statsButtons.forEach((button) => {
-  button.addEventListener("click", () => {
-    updateStats()
+  button.addEventListener("click", async () => {
+    await updateStats()
     showStatsPage()
   })
 })
@@ -274,7 +273,7 @@ async function showAllBooks() {
   librarian.bookShelf.forEach((book) => librarian.createNewCard(book))
 }
 
-function initLibrary() {
+async function initLibrary() {
   onAuthStateChanged(getAuth(), showAllBooks)
 }
 
@@ -306,7 +305,10 @@ function isUserSignedIn() {
 }
 
 function initFirebaseAuth() {
-  onAuthStateChanged(getAuth(), displayAccountStatus)
+  onAuthStateChanged(getAuth(), () => {
+    displayAccountStatus()
+    displayWelcome()
+  })
 }
 
 // Check if user is signed in, if not: show sign-in
@@ -335,13 +337,25 @@ function displayAccountStatus() {
   }
 }
 
+function displayWelcome() {
+  const main = document.querySelector(".card-deck")
+
+  if (isUserSignedIn()) {
+    console.log("user is logged in")
+    signInMain.setAttribute("hidden", "true")
+    main.classList.remove("not-logged-in")
+  } else {
+    console.log("user is not logged in")
+    signInMain.removeAttribute("hidden")
+    main.classList.add("not-logged-in")
+  }
+}
+
 const signInButton = document.querySelector(".sign-in")
 signInButton.addEventListener("click", signIn)
 
+const signInMain = document.querySelector(".sign-in-main")
+signInMain.addEventListener("click", signIn)
+
 const signOutButton = document.querySelector(".sign-out-button")
 signOutButton.addEventListener("click", signOutUser)
-
-// 2: Implement adding a book to their collection
-
-// 3: Implement loading books from their collection and listening for changes
-// TODO: LoadStorage()
