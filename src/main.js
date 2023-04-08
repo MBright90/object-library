@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 /* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-use-before-define */
@@ -242,15 +241,11 @@ function removeAllCards() {
   })
 }
 
+// COMPLETE THIS FUNCTION
 function resetLibrary() {
-  if (window.localStorage.getItem("userLibrary")) {
-    removeDropMenu()
-    // eslint-disable-next-line no-restricted-globals
-    if (confirm("Delete Library?")) {
-      window.localStorage.removeItem("userLibrary")
-      librarian.bookShelf = []
-      removeAllCards()
-    }
+  if (window.confirm("Are you sure you want to clear all book data?")) {
+    librarian.clearFirestore(librarian.bookShelf)
+    showAllBooks()
   }
 }
 
@@ -341,11 +336,9 @@ function displayWelcome() {
   const main = document.querySelector(".card-deck")
 
   if (isUserSignedIn()) {
-    console.log("user is logged in")
     signInMain.setAttribute("hidden", "true")
     main.classList.remove("not-logged-in")
   } else {
-    console.log("user is not logged in")
     signInMain.removeAttribute("hidden")
     main.classList.add("not-logged-in")
   }
