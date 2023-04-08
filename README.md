@@ -1,5 +1,17 @@
 # object-library
 
+## Hosted on firebase:
+To access the main build version of this site, complete with Google sign in:
+https://reading-library-3b437.web.app/
+
+## Github Pages Demo
+To access a demo version of this site, using local storage:
+https://mbright90.github.io/object-library/
+
+# Original ReadMe
+
+### The following are thoughts written post initial creation, prior to implementing webpack and firebase.
+
 At the outset of this project, I wanted to push myself to learn and implement some new concepts within javascript. The first step i took in completing this project was making a drawing of how I wanted it to look. From the beginning, my vision was always to have a static header and sidebar, and a deck of cards which scrolled depending on the amount of books. I felt confident in completing the aesthetic of the website and so initially created the layout out using flex box and grid. I hardcoded a set of cards in to the html so I could properly structure and test how responsive they were.
 
 I created a library array and book constructor, and moved my hard coded books to javascript, initiating them in the run script and made a function to create and display the html elements, including a delete. This was a good reminder of how to use the appendChild function. This also allowed me to clean up the html as I could remove the hardcoded cards. I then added two sorting functions to change the order of the cards depending on different criteria.
