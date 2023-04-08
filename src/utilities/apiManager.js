@@ -3,7 +3,6 @@
 // import { getAuth } from "firebase/compat/auth"
 
 import { getAuth } from "firebase/auth"
-
 import {
   getFirestore,
   collection,
@@ -15,19 +14,26 @@ import {
   query,
   where,
 } from "firebase/firestore"
+import appendChildren from "./utils"
 
 export default class APIManager {
   constructor(endpoint, key) {
     this.endpoint = endpoint
     this.key = key
-    this.bookShelf = []
   }
 
   generateBookID(title) {
     return title.toLowerCase().replaceAll(" ", "_")
   }
 
-  addBookToLibrary(title, author, year, description, imageURL, pageCount) {
+  async addBookToLibrary(
+    title,
+    author,
+    year,
+    description,
+    imageURL,
+    pageCount
+  ) {
     const { currentUser } = getAuth()
 
     // Return false if not logged in
@@ -40,7 +46,7 @@ export default class APIManager {
         "books"
       )
       // Add the book to the users database
-      addDoc(usersBookShelf, {
+      await addDoc(usersBookShelf, {
         title,
         author,
         year,
@@ -50,11 +56,14 @@ export default class APIManager {
         bookID,
         hasRead: false,
       })
+
       // Retrieve the book with the correct ID and add it to the bookshelf
       // and book cards list
-      const book = this.getSingleBook(bookID)
-      this.createNewCard(book)
+      const book = await this.getSingleBook(bookID)
 
+      // Add book to current bookshelf and create card
+      this.bookShelf = [...this.bookShelf, book]
+      this.createNewCard(book)
       return true
     } catch (error) {
       console.log("Failed to add book to library", error)
@@ -83,10 +92,9 @@ export default class APIManager {
     }
   }
 
-  // THIS FUNCTION DOES NOT WORK YET!
   async getSingleBook(bookID) {
     const { currentUser } = getAuth()
-    // Return false if not logged in
+    // Check if user logged in
     if (!currentUser) throw new Error("User is not logged in")
 
     let book
@@ -97,8 +105,8 @@ export default class APIManager {
       const querySnapshot = await getDocs(
         query(usersBookShelf, where("bookID", "==", bookID))
       )
-      console.log(book)
-      book = querySnapshot[0].data()
+      const bookDoc = querySnapshot.docs[0].data()
+      return { ...bookDoc, userRef: bookDoc.id }
     } catch (error) {
       console.log("Could not retrieve book: ", error)
     }
@@ -148,14 +156,15 @@ export default class APIManager {
     const deleteButton = document.createElement("a")
     deleteButton.innerHTML = '<i class="fa-solid fa-trash-can"></i>'
 
-    bookInfo.appendChild(bookTitle)
-    bookInfo.appendChild(bookAuthor)
-    bookInfo.appendChild(bookDescription)
-    bookInfo.appendChild(readButton)
-    bookInfo.appendChild(deleteButton)
-
-    cardTemplate.appendChild(cardImage)
-    cardTemplate.appendChild(bookInfo)
+    appendChildren(
+      bookInfo,
+      bookTitle,
+      bookAuthor,
+      bookDescription,
+      readButton,
+      deleteButton
+    )
+    appendChildren(cardTemplate, cardImage, bookInfo)
 
     cardDeck.appendChild(cardTemplate)
 
@@ -178,7 +187,7 @@ export default class APIManager {
       )
 
       if (readStatus === "false") {
-        // When setting book to has been read, update database doc and
+        // When setting book as has been read, update database doc and
         // update color of check mark
         updateDoc(docRef, {
           hasRead: true,
@@ -186,7 +195,7 @@ export default class APIManager {
         card.dataset.readStatus = true
         e.composedPath()[1].style = "background-color: #3CCF4E; color: #FFFFFF"
       } else {
-        // When setting book to has not been read, update database doc and
+        // When setting book as has not been read, update database doc and
         // update color of check mark
         updateDoc(docRef, {
           hasRead: false,
@@ -243,9 +252,6 @@ export default class APIManager {
       })
     return book
   }
-
-  // TODO!
-  // Update functions to retrieve stats from database and use reduce to work out
 
   async getCurrentStats() {
     const { currentUser } = getAuth()
