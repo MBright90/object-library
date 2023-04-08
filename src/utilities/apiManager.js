@@ -1,6 +1,5 @@
 /* eslint-disable no-console */
 /* eslint-disable class-methods-use-this */
-// import { getAuth } from "firebase/compat/auth"
 
 import { getAuth } from "firebase/auth"
 import {
@@ -20,6 +19,7 @@ export default class APIManager {
   constructor(endpoint, key) {
     this.endpoint = endpoint
     this.key = key
+    this.bookShelf = []
   }
 
   generateBookID(title) {
@@ -66,7 +66,7 @@ export default class APIManager {
       this.createNewCard(book)
       return true
     } catch (error) {
-      console.log("Failed to add book to library", error)
+      console.log("Failed to add book to library: ", error)
     }
     return false
   }
@@ -204,7 +204,7 @@ export default class APIManager {
         e.composedPath()[1].style = "background-color: ; color: inherit;"
       }
     } catch (error) {
-      console.log("Could not update read status", error)
+      console.log("Could not update read status: ", error)
     }
   }
 
@@ -226,9 +226,29 @@ export default class APIManager {
         await deleteDoc(docRef)
         card.remove()
       } catch (error) {
-        console.log("Book could not be deleted", error)
+        console.log("Book could not be deleted: ", error)
       }
     }
+  }
+
+  clearFirestore(bookShelf) {
+    const auth = getFirestore()
+    const { currentUser } = getAuth()
+
+    bookShelf.forEach(async (book) => {
+      try {
+        const docRef = doc(
+          auth,
+          "users",
+          currentUser.uid,
+          "books",
+          book.userRef
+        )
+        await deleteDoc(docRef)
+      } catch (error) {
+        console.log(book.bookId, "could not be deleted. Clear aborted: ", error)
+      }
+    })
   }
 
   // Autofill the title using google books API
