@@ -219,6 +219,29 @@ main .sidebar a {
     overflow-y: auto;
 }
 
+.not-logged-in {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+}
+
+.sign-in-main {
+    background-color: #003865;
+    border: none;
+    border-radius: 3px;
+    color: #FFFFFF;
+    cursor: pointer;
+    font-size: 18px;
+    padding: 8px 12px;
+}
+
+.sign-in-main i {
+    border: 2px solid #FFFFFF;
+    border-radius: 50%;
+    padding: 3px;
+    pointer-events: none;
+}
+
 .card-deck .card {
     border: 2px solid rgba(0, 0, 0, 0.4);
     border-radius: 10px;
