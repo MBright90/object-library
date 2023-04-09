@@ -32,6 +32,26 @@ const sortingProto = {
     }
     return titleA < titleB ? -1 : 1
   },
+
+  toggleSortingOrder(nodeList) {
+    nodeList.forEach((button) => {
+      if (button.dataset.sortingOrder === "ascending") {
+        button.dataset.sortingOrder = "descending"
+        if (button.textContent === "Sort by A-Z") {
+          button.textContent = "Sort by Z-A"
+        } else {
+          button.textContent = "Sort by Newest"
+        }
+      } else {
+        button.dataset.sortingOrder = "ascending"
+        if (button.textContent === "Sort by Z-A") {
+          button.textContent = "Sort by A-Z"
+        } else {
+          button.textContent = "Sort by Oldest"
+        }
+      }
+    })
+  },
 }
 
 const sortingObject = () => Object.assign(Object.create(sortingProto))
