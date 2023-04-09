@@ -4,3 +4,4 @@
 
 /.firebase/
 firebase.js
+*debug.log
