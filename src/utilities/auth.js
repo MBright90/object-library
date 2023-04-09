@@ -54,8 +54,9 @@ function displayAccountStatus() {
   }
 }
 
-function displayWelcome(signInMain) {
+function displayWelcome() {
   const main = document.querySelector(".card-deck")
+  const signInMain = document.querySelector(".sign-in-main")
 
   if (isUserSignedIn()) {
     signInMain.setAttribute("hidden", "true")

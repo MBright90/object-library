@@ -13,7 +13,7 @@ import {
   query,
   where,
 } from "firebase/firestore"
-import appendChildren from "./utils"
+import { appendChildren } from "./utils"
 
 export default class APIManager {
   constructor(endpoint, key) {
