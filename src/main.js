@@ -2,18 +2,12 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-use-before-define */
 import { initializeApp } from "firebase/app"
-import {
-  getAuth,
-  onAuthStateChanged,
-  GoogleAuthProvider,
-  signInWithPopup,
-  signOut,
-} from "firebase/auth"
+import { onAuthStateChanged, getAuth } from "firebase/auth"
+import { signIn, signOutUser, initFirebaseAuth } from "./utilities/auth"
 import firebaseConfig from "./firebase-config"
 import APIManager from "./utilities/apiManager"
 import sortingObject from "./utilities/sortingObject"
-
-import placeholderImage from "./assets/images/placeholder-profile.jpg"
+import { showStatsPage, updateStats } from "./utilities/utils"
 
 import "./styles/style.css"
 
@@ -152,26 +146,6 @@ closeAboutButton.addEventListener("click", closeAboutPage)
 
 const sortingHat = sortingObject()
 
-const toggleSortingOrder = (nodeList) => {
-  nodeList.forEach((button) => {
-    if (button.dataset.sortingOrder === "ascending") {
-      button.dataset.sortingOrder = "descending"
-      if (button.textContent === "Sort by A-Z") {
-        button.textContent = "Sort by Z-A"
-      } else {
-        button.textContent = "Sort by Newest"
-      }
-    } else {
-      button.dataset.sortingOrder = "ascending"
-      if (button.textContent === "Sort by Z-A") {
-        button.textContent = "Sort by A-Z"
-      } else {
-        button.textContent = "Sort by Oldest"
-      }
-    }
-  })
-}
-
 const sortYearButtons = document.querySelectorAll(".sort-year-button")
 sortYearButtons.forEach((button) => {
   button.addEventListener("click", () => {
@@ -180,7 +154,7 @@ sortYearButtons.forEach((button) => {
     librarian.bookShelf?.sort(sortingHat.compareBooksYear).forEach((book) => {
       librarian.createNewCard(book)
     })
-    toggleSortingOrder(sortYearButtons)
+    sortingHat.toggleSortingOrder(sortYearButtons)
   })
 })
 
@@ -192,38 +166,19 @@ sortAZButtons.forEach((button) => {
     librarian.bookShelf?.sort(sortingHat.compareBooksAZ).forEach((book) => {
       librarian.createNewCard(book)
     })
-    toggleSortingOrder(sortAZButtons)
+    sortingHat.toggleSortingOrder(sortAZButtons)
   })
 })
 
-// ---------------- Stat creation functions -------------- //
-
-const totalBooksPara = document.querySelector(".total-books")
-const booksReadPara = document.querySelector(".books-read")
-const totalPagesPara = document.querySelector(".total-pages")
-const pagesReadPara = document.querySelector(".pages-read")
-
-async function updateStats() {
-  const stats = await librarian.getCurrentStats()
-  totalBooksPara.textContent = stats.bookCount
-  booksReadPara.textContent = stats.booksRead
-  totalPagesPara.textContent = stats.totalPages
-  pagesReadPara.textContent = stats.pagesRead
-}
+// ---------------- Stat Showing functions -------------- //
 
 const statsPage = document.querySelector(".stats-page-background")
-
-function showStatsPage() {
-  if (statsPage.style.visibility !== "visible") {
-    statsPage.style.visibility = "visible"
-  }
-}
 
 const statsButtons = document.querySelectorAll(".stats-button")
 statsButtons.forEach((button) => {
   button.addEventListener("click", async () => {
-    await updateStats()
-    showStatsPage()
+    await updateStats(librarian.getCurrentStats())
+    showStatsPage(statsPage)
   })
 })
 
@@ -241,7 +196,6 @@ function removeAllCards() {
   })
 }
 
-// COMPLETE THIS FUNCTION
 function resetLibrary() {
   if (window.confirm("Are you sure you want to clear all book data?")) {
     librarian.clearFirestore(librarian.bookShelf)
@@ -275,74 +229,6 @@ async function initLibrary() {
 initLibrary()
 
 // --------- Firebase Auth Integration --------- //
-
-// TODOs:
-
-async function signIn() {
-  const provider = new GoogleAuthProvider()
-  await signInWithPopup(getAuth(), provider)
-}
-
-function signOutUser() {
-  signOut(getAuth())
-}
-
-function getUserName() {
-  return getAuth().currentUser.displayName
-}
-
-function getUserPicture() {
-  return getAuth().currentUser.photoURL || placeholderImage
-}
-
-function isUserSignedIn() {
-  return !!getAuth().currentUser
-}
-
-function initFirebaseAuth() {
-  onAuthStateChanged(getAuth(), () => {
-    displayAccountStatus()
-    displayWelcome()
-  })
-}
-
-// Check if user is signed in, if not: show sign-in
-function displayAccountStatus() {
-  const signInDiv = document.querySelector(".sign-in")
-  const userInfoDiv = document.querySelector(".user-info")
-  const userInfoDivChildren = [...userInfoDiv.children]
-  if (isUserSignedIn()) {
-    // If user is signed in, display the account info div
-    signInDiv.setAttribute("hidden", "true")
-    userInfoDiv.removeAttribute("hidden")
-    userInfoDivChildren?.forEach((child) => child.removeAttribute("hidden"))
-
-    // Display users picture and display name
-    const userProfilePic = document.querySelector(".user-pic")
-    userProfilePic.style.backgroundImage = `url('${getUserPicture()}')`
-    const userName = document.querySelector(".user-name")
-    userName.textContent = getUserName()
-  } else {
-    // If user is not signed in, display sign in prompt
-    userInfoDiv.setAttribute("hidden", "true")
-    userInfoDivChildren?.forEach((child) =>
-      child.setAttribute("hidden", "true")
-    )
-    signInDiv.removeAttribute("hidden")
-  }
-}
-
-function displayWelcome() {
-  const main = document.querySelector(".card-deck")
-
-  if (isUserSignedIn()) {
-    signInMain.setAttribute("hidden", "true")
-    main.classList.remove("not-logged-in")
-  } else {
-    signInMain.removeAttribute("hidden")
-    main.classList.add("not-logged-in")
-  }
-}
 
 const signInButton = document.querySelector(".sign-in")
 signInButton.addEventListener("click", signIn)
