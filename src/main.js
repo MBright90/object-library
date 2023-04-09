@@ -177,7 +177,7 @@ const statsPage = document.querySelector(".stats-page-background")
 const statsButtons = document.querySelectorAll(".stats-button")
 statsButtons.forEach((button) => {
   button.addEventListener("click", async () => {
-    await updateStats(librarian.getCurrentStats())
+    updateStats(await librarian.getCurrentStats())
     showStatsPage(statsPage)
   })
 })

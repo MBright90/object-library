@@ -9,7 +9,7 @@ const booksReadPara = document.querySelector(".books-read")
 const totalPagesPara = document.querySelector(".total-pages")
 const pagesReadPara = document.querySelector(".pages-read")
 
-export async function updateStats(currentStats) {
+export function updateStats(currentStats) {
   totalBooksPara.textContent = currentStats.bookCount
   booksReadPara.textContent = currentStats.booksRead
   totalPagesPara.textContent = currentStats.totalPages
