@@ -19,7 +19,10 @@ module.exports = {
       filename: "./styles/style.css",
     }),
     new CopyPlugin({
-      patterns: [{ from: "src/assets/fonts", to: "assets/fonts" }],
+      patterns: [
+        { from: "src/assets/fonts", to: "assets/fonts" },
+        { from: "src/assets/images/favicon.ico", to: "" },
+      ],
     }),
   ],
   module: {
