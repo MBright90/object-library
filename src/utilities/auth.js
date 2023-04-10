@@ -75,6 +75,7 @@ function toggleButtonStatus() {
   const userStatus = isUserSignedIn()
 
   buttonArr.forEach((button) => {
+    if (button.classList.contains("about-button")) return
     if (userStatus) button.disabled = false
     else button.disabled = true
   })
