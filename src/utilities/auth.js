@@ -67,9 +67,23 @@ function displayWelcome() {
   }
 }
 
+function toggleButtonStatus() {
+  const buttonArr = [
+    ...document.querySelectorAll(".dropdown-container button"),
+    ...document.querySelectorAll(".sidebar-buttons button"),
+  ]
+  const userStatus = isUserSignedIn()
+
+  buttonArr.forEach((button) => {
+    if (userStatus) button.disabled = false
+    else button.disabled = true
+  })
+}
+
 export function initFirebaseAuth() {
   onAuthStateChanged(getAuth(), () => {
     displayAccountStatus()
     displayWelcome()
+    toggleButtonStatus()
   })
 }
