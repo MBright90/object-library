@@ -136,7 +136,7 @@ header .menu-container .dropdown-container button {
     flex-grow: 1;
 }
 
-header .menu-container .dropdown-container button:hover {
+header .menu-container .dropdown-container button:not([disabled]):hover {
     background-color: #DDDDDD;
 }
 
@@ -187,16 +187,25 @@ main .sidebar button {
     width: 150px;
 }
 
-main .sidebar button:hover,
+main .sidebar button:not([disabled]):hover,
 .book-form-background .book-form-container button:hover {
     top: 2px;
     box-shadow: 0 3px 3px rgba(0, 0, 0, 0.8);
 }
 
-main .sidebar button:active,
+main .sidebar button:not([disabled]):active,
 .form-buttons-container button:active {
     background-color: #003865;
     color: #FFFFFF;
+}
+
+
+main .sidebar button:disabled,
+.about-page-background .about-page-container button:disabled,
+.book-form-background .book-form-container button:disabled,
+.stats-page-background .stats-page-container button:disabled {
+    border-color: #dcdcdc;
+    color: #dcdcdc;
 }
 
 main .sidebar a {
